@@ -8,7 +8,7 @@ Website profil resmi untuk Laboratorium Riset IoT. Proyek ini dikembangkan sebag
 
 Website ini dirancang sebagai etalase digital utama untuk memamerkan riset, fasilitas, anggota tim, dan publikasi lab kepada mitra industri, akademisi, dan calon mahasiswa.
 
-## Konteks ProSPEK (Proyek Spek)
+## Konteks Proyek Spek
 
 Proyek ini ("Website Lab IoT") juga difungsikan sebagai objek studi kasus untuk Laporan Ujian Tengah Semester (UTS) II3130, di mana proyek ini dianalisis sebagai sebuah "Virtual Lab" sesuai arahan tugas.
 
@@ -35,8 +35,8 @@ Pastikan kamu memiliki [Node.js](https://nodejs.org/) (v18 atau lebih baru) dan 
 
 1.  **Clone repository ini:**
     ```bash
-    git clone [https://github.com/USERNAME-KAMU/pawm-tubes-iot-lab.git](https://github.com/USERNAME-KAMU/pawm-tubes-iot-lab.git)
-    cd pawm-tubes-iot-lab
+    git clone https://github.com/GhazyUrbayani/PAWM-IoTLabITB.git
+    cd PAWM-IoTLabITB
     ```
 
 2.  **Install dependencies:**

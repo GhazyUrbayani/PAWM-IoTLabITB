@@ -80,7 +80,7 @@ export default function ResearchPage() {
       {/* Filter Section */}
       <section className="py-12 border-b border-border">
         <Container>
-          <div className="flex flex-wrap gap-3 justify-center">
+          <div className="flex flex-wrap gap-3 justify-center hover-lift">
             {categories.map((category) => (
               <button
                 key={category}
@@ -88,7 +88,7 @@ export default function ResearchPage() {
                 className={`px-4 py-2 rounded-full font-medium transition-all ${
                   activeFilter === category
                     ? "bg-accent text-primary-foreground"
-                    : "bg-secondary text-muted-foreground hover:text-accent border border-border"
+                    : "bg-secondary text-muted-foreground hover:text-accent border border-border cursor-pointer"
                 }`}
               >
                 {category}
@@ -105,9 +105,9 @@ export default function ResearchPage() {
             {filteredProjects.map((project, idx) => (
               <div
                 key={idx}
-                className="bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg hover:shadow-accent/20 transition-all duration-300 group cursor-pointer"
+                className="bg-card rounded-lg overflow-hidden border border-border hover:shadow-lg hover:shadow-accent/20 transition-all duration-300 group hover-lift cursor-pointer"
               >
-                <div className="relative h-48 overflow-hidden">
+                <div className="relative h-48 overflow-hidden hover-lift cursor-pointer">
                   <Image
                     src={project.image || "/placeholder.svg"}
                     alt={project.title}

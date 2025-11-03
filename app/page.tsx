@@ -6,6 +6,14 @@ import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Avatar } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
 
 export default function Home() {
   return (
@@ -13,14 +21,15 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image with Overlay */}
-        <div className="absolute inset-0 z-0">
+      <section className="relative w-full py-5 md:py-10 lg:py-15
+                    bg-gradient-to-br from-background via-secondary/10 to-primary/10 
+                    overflow-hidden">
+        <div className="absolute h-[80vh] inset-0 z-0">
           <Image
             src="/modern-iot-laboratory-with-advanced-equipment.jpg"
             alt="IoT Lab"
             fill
-            className="object-cover"
+            className="object-cover blur-lg"
             priority
           />
           <div className="absolute inset-0 bg-background/70"></div>
@@ -29,14 +38,14 @@ export default function Home() {
         {/* Content */}
         <Container className="relative z-10 text-center py-20">
           <h1 className="mb-6 text-balance animate-fade-in-up">Inovasi Terhubung: Masa Depan Riset IoT</h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 text-balance animate-fade-in-up animation-delay-100">
+          <p className="text-lg md:text-xl max-w-2xl mx-auto mb-8 text-balance animate-fade-in-up animation-delay-100">
             Menjembatani dunia fisik dan digital melalui penelitian mutakhir di bidang sensor networks, big data, dan
             intelligent systems.
           </p>
           <Link href="/research">
             <Button
               size="lg"
-              className="bg-accent text-primary-foreground hover:bg-accent/90 gap-2 animate-fade-in-up animation-delay-200 hover-lift"
+              className="bg-accent text-primary-foreground hover:bg-accent/90 gap-2 animate-fade-in-up animation-delay-200 hover-lift cursor-pointer"
             >
               Jelajahi Riset Kami
               <ArrowRight size={20} />
@@ -68,7 +77,7 @@ export default function Home() {
                 </p>
               </div>
               <Link href="/about" className="inline-block mt-6">
-                <Button variant="outline" className="border-accent text-accent hover:bg-accent/10 bg-transparent">
+                <Button variant="outline" className="border-accent text-accent hover:bg-accent/10 bg-transparent animate-fade-in-up animation-delay-200 hover-lift cursor-pointer">
                   Pelajari Lebih Lanjut
                 </Button>
               </Link>
@@ -143,7 +152,7 @@ export default function Home() {
 
           <div className="text-center mt-12">
             <Link href="/research">
-              <Button size="lg" className="bg-accent text-primary-foreground hover:bg-accent/90 gap-2 hover-lift">
+              <Button size="lg" className="bg-accent text-primary-foreground hover:bg-accent/90 gap-2 hover-lift animate-fade-in-up animation-delay-200 cursor-pointer">
                 Lihat Semua Proyek
                 <ArrowRight size={20} />
               </Button>
@@ -152,58 +161,107 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Peta Jalan Riset */}
-      <section className="py-20 bg-secondary/30">
+      {/* Member Lab*/}
+      <section className="py-20">
         <Container>
           <div className="text-center max-w-2xl mx-auto">
-            <h2 className="mb-4">Peta Jalan Riset</h2>
+            <h2 className="mb-4">Member Lab</h2>
             <p className="text-lg text-muted-foreground mb-12">
-              Fokus kami berkembang dari fondasi hingga implementasi skala penuh, mendorong inovasi di setiap langkah.
+              Tim kami terdiri dari peneliti, dosen, dan mahasiswa yang berdedikasi untuk inovasi IoT.
             </p>
           </div>
 
-          {/* Timeline Items */}
-          <div className="relative w-full max-w-6xl mx-auto"> {/* 1. Wrapper dengan max-width */}
-            {/* 2. Garis Horizontal di Tengah */}
-            <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-border"></div>
+          {/* Profile Card Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 hover-lift cursor-pointer">
+            {[
+              { name: "Dr. Budi Hartono", role: "Kepala Laboratorium", img: "/team-member-1.jpg" },
+              { name: "Siti Aminah, M.T.", role: "Peneliti Utama", img: "/team-member-2.jpg" },
+              { name: "Andi Wijaya, Ph.D.", role: "Dosen Pembimbing", img: "/team-member-3.jpg" },
+            ].map((member) => (
+              <Card key={member.name} className="text-center hover-lift">
+                <CardHeader>
+                  <Avatar className="w-24 h-24 mx-auto mb-4">
+                    <Image
+                      src={member.img}
+                      alt={member.name}
+                      width={96}
+                      height={96}
+                      className="object-cover"
+                    />
+                  </Avatar>
+                  <CardTitle className="font-serif">{member.name}</CardTitle>
+                  <CardDescription>{member.role}</CardDescription>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+          <div className="text-center mt-12">
+            <Link href="/about">
+              <Button variant="outline" className="border-accent text-accent hover:bg-accent/10 hover-lift cursor-pointer">
+                Lihat Semua Anggota <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
+        </Container>
+      </section>
+      {/* Publikasi Ilmiah Section */}
+      <section className="py-20 bg-secondary/30">
+        <Container>
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="mb-4">Publikasi Ilmiah</h2>
+            <p className="text-lg text-muted-foreground mb-12">
+              Riset terbaru kami yang dipublikasikan di jurnal dan konferensi internasional.
+            </p>
+          </div>
 
-            {/* 3. Grid untuk mengatur kolom */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4">
-              {[
-                { year: "2024", title: "Fondasi", desc: "Pembentukan tim dan infrastruktur dasar" },
-                { year: "2025", title: "Pengembangan Prototipe", desc: "Pengembangan prototipe dan uji coba awal" },
-                { year: "2026", title: "Uji Coba Skala Penuh", desc: "Implementasi di lapangan dan validasi" },
-                { year: "2027", title: "Komersial", desc: "Peluncuran produk dan kemitraan industri" },
-              ].map((item, idx) => (
-                // 4. Setiap kolom dengan padding vertikal
-                <div key={idx} className="relative flex flex-col justify-center min-h-[300px] md:min-h-[350px]">
-                  {/* 5. Timeline Dot */}
-                  <div className="hidden md:flex absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-                    <div className="w-5 h-5 bg-accent rounded-full border-4 border-background shadow-lg"></div>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {[
+              { title: "A Novel Framework for IoT-based Bridge Health Monitoring", authors: "B. Hartono, S. Aminah", year: 2024, url: "#" },
+              { title: "Scalable Data Ingestion for Smart City IoT Networks", authors: "A. Wijaya", year: 2024, url: "#" },
+            ].map((pub) => (
+              <Link
+                href={pub.url}
+                target="_blank"
+                key={pub.title}
+                className="block p-6 bg-card rounded-lg border border-border hover-lift transition-all"
+              >
+                <h3 className="font-serif font-bold text-foreground mb-2">{pub.title}</h3>
+                <p className="text-sm text-muted-foreground mb-3">{pub.authors}</p>
+                <Badge variant="outline">{pub.year}</Badge>
+              </Link>
+            ))}
+          </div>
+        </Container>
+      </section>
 
-                  {/* 6. Card dengan posisi atas/bawah */}
-                  <div
-                    className={cn(
-                      "w-full bg-card rounded-lg p-6 border border-border text-center hover-lift shadow-md relative z-10",
-                      // Mobile: margin top untuk spacing
-                      "mt-8 md:mt-0",
-                      // Desktop: Item genap ke atas, ganjil ke bawah
-                      idx % 2 === 0 
-                        ? "md:self-start md:-translate-y-24" // Atas
-                        : "md:self-end md:translate-y-24" // Bawah
-                    )}
-                  >
-                    <div className="text-accent font-serif font-bold text-2xl mb-2">{item.year}</div>
-                    <h3 className="font-serif font-bold text-foreground mb-2 text-lg">{item.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
+      {/* Partners & Funding Section */}
+      <section className="py-20">
+        <Container>
+          <div className="text-center max-w-2xl mx-auto">
+            <h2 className="mb-4">Partners & Funding</h2>
+            <p className="text-lg text-muted-foreground mb-12">
+              Riset kami didukung oleh kolaborasi dengan industri terkemuka dan lembaga pendanaan.
+            </p>
+          </div>
+
+          {/* Grid Logo */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 items-center">
+            <div className="flex justify-center">
+              <Image src="/placeholder-logo.svg" alt="Partner Logo" width={150} height={70} className="opacity-60" />
+            </div>
+            <div className="flex justify-center">
+              <Image src="/placeholder-logo.svg" alt="Partner Logo" width={150} height={70} className="opacity-60" />
+            </div>
+            <div className="flex justify-center">
+              <Image src="/placeholder-logo.svg" alt="Partner Logo" width={150} height={70} className="opacity-60" />
+            </div>
+            <div className="flex justify-center">
+              <Image src="/placeholder-logo.svg" alt="Partner Logo" width={150} height={70} className="opacity-60" />
             </div>
           </div>
         </Container>
       </section>
+
       <Footer />
     </>
   )

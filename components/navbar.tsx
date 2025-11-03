@@ -2,8 +2,11 @@
 
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import { Button } from "@/components/ui/button"
+import { User } from "lucide-react"
 import { Menu, X } from "lucide-react"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -22,7 +25,6 @@ export function Navbar() {
     { href: "/", label: "Home" },
     { href: "/about", label: "Tentang Kami" },
     { href: "/research", label: "Riset & Proyek" },
-    { href: "/publications", label: "Publikasi" },
     { href: "/contact", label: "Kontak" },
   ]
 
@@ -39,17 +41,21 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
-              <span className="text-primary-foreground font-serif font-bold text-sm">IoT</span>
-            </div>
-            <span className="font-serif font-bold text-lg text-foreground hidden sm:inline group-hover:text-accent transition-colors">
+          <Link href="/" className="flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="IoT Lab Logo"
+              width={128}
+              height={128}
+              className="object-contain"
+            />
+            <span className="font-serif text-2xl font-bold text-foreground -ml-11">
               IoT Lab
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -63,6 +69,12 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <Button variant="ghost" size="icon" asChild className="md:flex gap">
+              <Link href="/admin/login">
+                <User className="h-5 w-5" />
+                <span>Login</span>
+              </Link>
+            </Button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -91,6 +103,13 @@ export function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/admin/login"
+              className="block px-4 py-2 rounded-lg transition-all text-muted-foreground hover:text-accent hover:bg-secondary/50"
+              onClick={() => setIsOpen(false)}
+            >
+              Admin Login
+            </Link>
           </div>
         )}
       </div>

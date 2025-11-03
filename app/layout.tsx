@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Merriweather, Inter } from "next/font/google"
+import { Merriweather, Poppins } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ScrollToTop } from "@/components/scroll-to-top"
 import "./globals.css"
@@ -11,8 +11,9 @@ const merriweather = Merriweather({
   variable: "--font-serif",
 })
 
-const inter = Inter({
+const poppins = Poppins({
   subsets: ["latin"],
+  weight: ["400", "500", "700"],
   variable: "--font-sans",
 })
 
@@ -29,9 +30,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${merriweather.variable} ${inter.variable} font-sans antialiased bg-background text-foreground`}
+        className={`${merriweather.variable} ${poppins.variable} font-sans antialiased bg-background text-foreground`}
       >
         {children}
         <ScrollToTop />

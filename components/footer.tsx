@@ -9,9 +9,6 @@ export function Footer() {
           {/* Column 1: Lab Info */}
           <div>
             <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-serif font-bold text-sm">IoT</span>
-              </div>
               <span className="font-serif font-bold text-foreground">IoT Lab</span>
             </div>
             <div className="space-y-3 text-sm text-muted-foreground">
@@ -55,11 +52,6 @@ export function Footer() {
               <li>
                 <Link href="/research" className="hover:text-accent transition-colors">
                   Riset & Proyek
-                </Link>
-              </li>
-              <li>
-                <Link href="/publications" className="hover:text-accent transition-colors">
-                  Publikasi
                 </Link>
               </li>
               <li>

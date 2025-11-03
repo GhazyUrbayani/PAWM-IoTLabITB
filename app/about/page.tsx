@@ -121,23 +121,39 @@ export default function AboutPage() {
               </ul>
             </div>
 
-            {/* History */}
-            <div>
-              <h2 className="mb-6 text-accent">Sejarah Lab</h2>
-              <div className="space-y-4 text-muted-foreground">
-                <p>
-                  IoT Lab didirikan pada tahun 2020 sebagai bagian dari inisiatif Institut Teknologi Bandung untuk
-                  memperkuat penelitian di bidang teknologi informasi dan komunikasi. Sejak awal, lab ini telah fokus
-                  pada pengembangan solusi IoT yang inovatif dan relevan dengan kebutuhan industri Indonesia.
-                </p>
-                <p>
-                  Dalam lima tahun pertama, IoT Lab telah menghasilkan lebih dari 50 publikasi ilmiah, 15 paten, dan
-                  berbagai prototipe yang telah diimplementasikan di lapangan. Tim kami terdiri dari peneliti
-                  berpengalaman, engineer berbakat, dan mahasiswa berdedikasi yang bekerja sama untuk menciptakan dampak
-                  positif melalui teknologi.
-                </p>
-              </div>
-            </div>
+            {/* Profil & Sejarah Lab Section */}
+            <section className="py-20">
+              <Container>
+                <div className="grid md:grid-cols-2 gap-12 items-center">
+                  {/* Kolom Teks Sejarah */}
+                  <div>
+                    <h2 className="mb-4">Sejarah Kami: IoT & Future Digital Economy Lab</h2>
+                    <div className="space-y-4 text-muted-foreground leading-relaxed">
+                      <p>
+                        Diresmikan pada 18 Maret 2019 oleh Menteri Perindustrian Airlangga Hartarto, "Internet of Things (IoT) and Future Digital Economy Lab" di Institut Teknologi Bandung (ITB) hadir atas kerjasama dengan Indosat Ooredoo.
+                      </p>
+                      <p>
+                        Peresmian ini merupakan upaya mendorong inovasi dan kemajuan dalam bidang ekonomi digital, terutama di era industri 4.0. Lab ini diharapkan mampu menghasilkan ide inovasi, referensi desain produk, dan solusi guna menjawab kasus-kasus IoT yang dapat dikembangkan dalam skala industri.
+                      </p>
+                      <p>
+                        Rektor ITB saat itu, Prof. Dr. Ir. Kadarsah Suryadi, menyampaikan bahwa kehadiran Lab IoT ini akan sangat bermanfaat untuk kemajuan bangsa dalam rangka mencapai tahap demokratisasi informasi dan pengetahuan.
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Kolom Gambar */}
+                  <div className="rounded-lg overflow-hidden shadow-lg">
+                    <Image
+                      src="/image_9c261b.jpg" 
+                      alt="Peresmian IoT Lab ITB (Dok. Humas ITB)"
+                      width={600}
+                      height={400}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
+              </Container>
+            </section>
           </div>
         </Container>
       </section>

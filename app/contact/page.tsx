@@ -14,35 +14,12 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 export default function ContactPage() {
   const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORM!)
 
-  if (state.succeeded) {
-    return (
-      <>
-        <Navbar />
-        <Container className="flex items-center justify-center min-h-[60vh]">
-          <Alert
-            variant="default"
-            className="max-w-lg bg-green-50 border border-green-200"
-          >
-            <CheckCircle className="h-4 w-4 text-green-600" />
-            <AlertTitle className="text-green-800 font-serif">
-              Pesan Terkirim!
-            </AlertTitle>
-            <AlertDescription className="text-green-700">
-              Terima kasih telah menghubungi kami. Tim kami akan segera merespons Anda.
-            </AlertDescription>
-          </Alert>
-        </Container>
-        <Footer />
-      </>
-    )
-  }
-
   return (
     <>
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative py-20 bg-secondary/30">
+      <section className="relative mt-30 mb-5 bg-secondary/30">
         <Container>
           <div className="text-center">
             <h1 className="mb-4">Hubungi Kami</h1>
@@ -55,97 +32,116 @@ export default function ContactPage() {
       </section>
 
       {/* Form & Info Section */}
-      <section className="py-20">
+      <section className="py-5">
         <Container>
           <div className="grid md:grid-cols-2 gap-12">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Nama Lengkap
-                </label>
-                <Input
-                  id="name"
-                  type="text"
-                  name="name"
-                  placeholder="Nama Anda"
-                  required
-                />
-              </div>
+            <div className="space-y-6">
+              {/* Success Alert */}
+              {state.succeeded && (
+                <Alert variant="default" className="bg-green-50 border border-green-200">
+                  <CheckCircle className="h-4 w-4 text-green-600" />
+                  <AlertTitle className="text-green-800 font-serif">
+                    Pesan Terkirim!
+                  </AlertTitle>
+                  <AlertDescription className="text-green-700">
+                    Terima kasih telah menghubungi kami. Tim kami akan segera merespons Anda.
+                  </AlertDescription>
+                </Alert>
+              )}
 
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Email
-                </label>
-                <Input
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="anda@email.com"
-                  required
-                />
-                <ValidationError
-                  prefix="Email"
-                  field="email"
-                  errors={state.errors}
-                  className="text-sm text-destructive mt-1"
-                />
-              </div>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-foreground mb-2"
+                  >
+                    Nama Lengkap
+                  </label>
+                  <Input
+                    id="name"
+                    type="text"
+                    name="name"
+                    placeholder="Nama Anda"
+                    required
+                    disabled={state.submitting}
+                  />
+                </div>
 
-              <div>
-                <label
-                  htmlFor="subject"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Subjek
-                </label>
-                <Input
-                  id="subject"
-                  type="text"
-                  name="subject"
-                  placeholder="Subjek pesan Anda"
-                  required
-                />
-              </div>
+                <div>
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-foreground mb-2"
+                  >
+                    Email
+                  </label>
+                  <Input
+                    id="email"
+                    type="email"
+                    name="email"
+                    placeholder="anda@email.com"
+                    required
+                    disabled={state.submitting}
+                  />
+                  <ValidationError
+                    prefix="Email"
+                    field="email"
+                    errors={state.errors}
+                    className="text-sm text-destructive mt-1"
+                  />
+                </div>
 
-              <div>
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-medium text-foreground mb-2"
-                >
-                  Pesan
-                </label>
-                <Textarea
-                  id="message"
-                  name="message"
-                  rows={6}
-                  placeholder="Tulis pesan Anda di sini..."
-                  required
-                />
-                <ValidationError
-                  prefix="Message"
-                  field="message"
-                  errors={state.errors}
-                  className="text-sm text-destructive mt-1"
-                />
-              </div>
+                <div>
+                  <label
+                    htmlFor="subject"
+                    className="block text-sm font-medium text-foreground mb-2"
+                  >
+                    Subjek
+                  </label>
+                  <Input
+                    id="subject"
+                    type="text"
+                    name="subject"
+                    placeholder="Subjek pesan Anda"
+                    required
+                    disabled={state.submitting}
+                  />
+                </div>
 
-              <div>
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full"
-                  disabled={state.submitting}
-                >
-                  {state.submitting ? "Mengirim..." : "Kirim Pesan"}
-                </Button>
-              </div>
-            </form>
+                <div>
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-foreground mb-2"
+                  >
+                    Pesan
+                  </label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    rows={6}
+                    placeholder="Tulis pesan Anda di sini..."
+                    required
+                    disabled={state.submitting}
+                  />
+                  <ValidationError
+                    prefix="Message"
+                    field="message"
+                    errors={state.errors}
+                    className="text-sm text-destructive mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full hover-lift cursor-pointer"
+                    disabled={state.submitting}
+                  >
+                    {state.submitting ? "Mengirim..." : "Kirim Pesan"}
+                  </Button>
+                </div>
+              </form>
+            </div>
 
             {/* Info Kontak & Peta */}
             <div className="space-y-8">
@@ -219,7 +215,6 @@ export default function ContactPage() {
           </div>
         </Container>
       </section>
-
       <Footer />
     </>
   )

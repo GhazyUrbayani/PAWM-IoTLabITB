@@ -3,7 +3,14 @@ import type { Metadata } from "next"
 import { Merriweather, Poppins } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ScrollToTop } from "@/components/scroll-to-top"
+import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeToggle } from "@/components/theme-toggle"
 import "./globals.css"
+
+<head>
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+</head>
 
 const merriweather = Merriweather({
   subsets: ["latin"],
@@ -32,11 +39,22 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
-        className={`${merriweather.variable} ${poppins.variable} font-sans antialiased bg-background text-foreground`}
+        className={`${merriweather.variable} ${poppins.variable} animated-gradient font-sans text-foreground min-h-screen antialiased m-0 p-0`}
       >
         {children}
-        <ScrollToTop />
-        <Analytics />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Analytics />
+
+          <div className="rounded-full border cursor-pointer fixed bottom-35 right-9.5 z-40 flex flex-col hover-lift">
+            <ThemeToggle />
+          </div>
+          <ScrollToTop />
+        </ThemeProvider>
       </body>
     </html>
   )

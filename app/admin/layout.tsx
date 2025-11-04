@@ -52,30 +52,42 @@ export default function AdminLayout({
   
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(prev => !prev);
+  };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <div className="flex h-screen bg-background">
       {/* Cookie cleanup on tab close */}
       <CookieCleanup />
       
-      {/* Mobile Menu Button */}
+      {/* Toggle Menu Button */}
       <button
+        className="fixed top-4 left-4 z-[100] lg:hidden p-2 bg-background/95 rounded-lg shadow-lg hover:bg-accent/5 transition-colors cursor-pointer flex items-center justify-center"
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-background/95 rounded-lg shadow-lg hover:bg-accent/5 transition-colors cursor-pointer"
-        aria-label="Toggle menu"
+        aria-label={isSidebarOpen ? "Close menu" : "Open menu"}
       >
-        <Menu className="h-5 w-5 text-foreground" />
+        {isSidebarOpen ? (
+          <X className="h-5 w-5 text-foreground" />
+        ) : (
+          <Menu className="h-5 w-5 text-foreground" />
+        )}
       </button>
 
       {/* Backdrop for mobile */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-background/80 backdrop-blur-sm lg:hidden z-40"
+          className="fixed inset-0 bg-background/80 backdrop-blur-sm lg:hidden z-[80]"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
       
       {/* Sidebar */}
-      <aside className={`fixed lg:relative w-64 border-r bg-background h-full transition-transform duration-300 ease-in-out z-50 ${
+      <aside className={`fixed lg:relative w-64 border-r bg-background h-full transform transition-transform duration-200 ease-in-out z-[90] ${
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
       }`}>
         <div className="flex h-full flex-col">
@@ -95,7 +107,7 @@ export default function AdminLayout({
                   key={item.href}
                   href={item.href}
                   className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors hover:bg-accent/10"
-                  onClick={() => setIsSidebarOpen(false)}
+                  onClick={closeSidebar}
                 >
                   <item.icon className="h-4 w-4" />
                   {item.label}

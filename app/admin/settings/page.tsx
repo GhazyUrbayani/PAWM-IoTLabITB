@@ -41,6 +41,8 @@ export default function SettingsPage() {
   const [contactEmail, setContactEmail] = useState("")
   const [contactPhone, setContactPhone] = useState("")
 
+  const [originalValues, setOriginalValues] = useState<Record<string, string>>({})
+
   useEffect(() => {
     fetchPageContent()
   }, [])
@@ -59,24 +61,52 @@ export default function SettingsPage() {
       } else if (data && Array.isArray(data)) {
         const contentMap = new Map(data.map((item: any) => [item.key, item.value]))
         
-        setHeroTitle(contentMap.get("hero_title") || "")
-        setHeroSubtitle(contentMap.get("hero_subtitle") || "")
-        setHeroImage(contentMap.get("hero_image") || "")
-        setHeroImagePreview(contentMap.get("hero_image") || "")
+        const heroTitleVal = contentMap.get("hero_title") || ""
+        const heroSubtitleVal = contentMap.get("hero_subtitle") || ""
+        const heroImageVal = contentMap.get("hero_image") || ""
+        const aboutTitleVal = contentMap.get("about_title") || ""
+        const aboutContentVal = contentMap.get("about_content") || ""
+        const aboutImageVal = contentMap.get("about_image") || ""
+        const historyTitleVal = contentMap.get("history_title") || ""
+        const historyContentVal = contentMap.get("history_content") || ""
+        const historyImageVal = contentMap.get("history_image") || ""
+        const contactAddressVal = contentMap.get("contact_address") || ""
+        const contactEmailVal = contentMap.get("contact_email") || ""
+        const contactPhoneVal = contentMap.get("contact_phone") || ""
         
-        setAboutTitle(contentMap.get("about_title") || "")
-        setAboutContent(contentMap.get("about_content") || "")
-        setAboutImage(contentMap.get("about_image") || "")
-        setAboutImagePreview(contentMap.get("about_image") || "")
+        setHeroTitle(heroTitleVal)
+        setHeroSubtitle(heroSubtitleVal)
+        setHeroImage(heroImageVal)
+        setHeroImagePreview(heroImageVal)
         
-        setHistoryTitle(contentMap.get("history_title") || "")
-        setHistoryContent(contentMap.get("history_content") || "")
-        setHistoryImage(contentMap.get("history_image") || "")
-        setHistoryImagePreview(contentMap.get("history_image") || "")
+        setAboutTitle(aboutTitleVal)
+        setAboutContent(aboutContentVal)
+        setAboutImage(aboutImageVal)
+        setAboutImagePreview(aboutImageVal)
         
-        setContactAddress(contentMap.get("contact_address") || "")
-        setContactEmail(contentMap.get("contact_email") || "")
-        setContactPhone(contentMap.get("contact_phone") || "")
+        setHistoryTitle(historyTitleVal)
+        setHistoryContent(historyContentVal)
+        setHistoryImage(historyImageVal)
+        setHistoryImagePreview(historyImageVal)
+        
+        setContactAddress(contactAddressVal)
+        setContactEmail(contactEmailVal)
+        setContactPhone(contactPhoneVal)
+
+        setOriginalValues({
+          hero_title: heroTitleVal,
+          hero_subtitle: heroSubtitleVal,
+          hero_image: heroImageVal,
+          about_title: aboutTitleVal,
+          about_content: aboutContentVal,
+          about_image: aboutImageVal,
+          history_title: historyTitleVal,
+          history_content: historyContentVal,
+          history_image: historyImageVal,
+          contact_address: contactAddressVal,
+          contact_email: contactEmailVal,
+          contact_phone: contactPhoneVal,
+        })
       }
     } catch (err: any) {
       toast({
@@ -152,7 +182,7 @@ export default function SettingsPage() {
         finalHistoryImage = url!
       }
 
-      const updates = [
+      const allUpdates = [
         { key: "hero_title", value: heroTitle },
         { key: "hero_subtitle", value: heroSubtitle },
         { key: "hero_image", value: finalHeroImage },
@@ -167,10 +197,25 @@ export default function SettingsPage() {
         { key: "contact_phone", value: contactPhone },
       ]
 
+      const changedUpdates = allUpdates.filter(
+        update => update.value !== (originalValues[update.key] || "")
+      )
+
+      if (changedUpdates.length === 0) {
+        toast({ 
+          title: "ℹ️ Tidak Ada Perubahan", 
+          description: "Tidak ada pengaturan yang diubah.", 
+          variant: "default",
+          className: "backdrop-blur-sm"
+        })
+        setSaving(false)
+        return
+      }
+
       let hasError = false
       let savedCount = 0
 
-      for (const update of updates) {
+      for (const update of changedUpdates) {
         const { error } = await pageContentApi.upsert(update.key, update.value)
         if (error) {
           hasError = true
@@ -181,7 +226,12 @@ export default function SettingsPage() {
       }
 
       if (!hasError) {
-        toast({ title: "✅ Berhasil Disimpan!", description: `${savedCount} pengaturan berhasil diperbarui.`, variant: "default", className: "backdrop-blur-sm" })
+        toast({ 
+          title: "✅ Berhasil Disimpan!", 
+          description: `${savedCount} pengaturan berhasil diperbarui.`, 
+          variant: "default", 
+          className: "backdrop-blur-sm" 
+        })
         setHeroImageFile(null)
         setAboutImageFile(null)
         setHistoryImageFile(null)

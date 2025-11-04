@@ -21,10 +21,11 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient();
     const { data: pageContent, error: dbError } = await supabase
       .from('page_content')
-      .select('contact_email')
+      .select('value')
+      .eq('key', 'contact_email')
       .single();
 
-    if (dbError || !pageContent?.contact_email) {
+    if (dbError || !pageContent?.value) {
       console.error('Failed to fetch contact email:', dbError);
       return NextResponse.json(
         { error: 'Gagal mendapatkan email tujuan' },
@@ -32,7 +33,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const toEmail = pageContent.contact_email;
+    const toEmail = pageContent.value;
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({

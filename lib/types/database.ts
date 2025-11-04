@@ -74,6 +74,17 @@ export type DashboardStats = {
   partners: number
 }
 
+export type ActivityLog = {
+  id: string
+  action: 'create' | 'update' | 'delete'
+  entity_type: 'project' | 'member' | 'publication' | 'partner' | 'page_content'
+  entity_id: string | null
+  entity_name: string | null
+  user_email: string | null
+  description: string | null
+  created_at: string
+}
+
 // API Response types
 export type ApiResponse<T> = {
   data?: T

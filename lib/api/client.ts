@@ -16,6 +16,7 @@ import type {
   InsertPageContent,
   UpdatePageContent,
   DashboardStats,
+  ActivityLog,
   ApiResponse,
 } from "@/lib/types/database"
 
@@ -197,5 +198,13 @@ export const pageContentApi = {
 export const statsApi = {
   getDashboard: async () => {
     return fetchApi<DashboardStats>("/api/stats")
+  },
+}
+
+// ==================== ACTIVITY LOGS ====================
+
+export const activityLogsApi = {
+  getRecent: async (limit: number = 10) => {
+    return fetchApi<ActivityLog[]>(`/api/activity-logs?limit=${limit}`)
   },
 }

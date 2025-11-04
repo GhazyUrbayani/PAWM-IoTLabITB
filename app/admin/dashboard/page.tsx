@@ -1,10 +1,12 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Briefcase, Users, BookOpen, FileText, TrendingUp } from "lucide-react"
+import { Briefcase, Users, BookOpen, FileText, TrendingUp, Clock } from "lucide-react"
 import { useEffect, useState } from "react"
-import { statsApi } from "@/lib/api/client"
-import type { DashboardStats } from "@/lib/types/database"
+import { statsApi, activityLogsApi } from "@/lib/api/client"
+import type { DashboardStats, ActivityLog } from "@/lib/types/database"
+import { formatDistanceToNow } from "date-fns"
+import { id as idLocale } from "date-fns/locale"
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats>({
@@ -13,10 +15,13 @@ export default function DashboardPage() {
     publications: 0,
     partners: 0,
   })
+  const [activities, setActivities] = useState<ActivityLog[]>([])
   const [loading, setLoading] = useState(true)
+  const [activitiesLoading, setActivitiesLoading] = useState(true)
 
   useEffect(() => {
     fetchStats()
+    fetchActivities()
   }, [])
 
   const fetchStats = async () => {
@@ -26,6 +31,15 @@ export default function DashboardPage() {
       setStats(data as any)
     }
     setLoading(false)
+  }
+
+  const fetchActivities = async () => {
+    setActivitiesLoading(true)
+    const { data, error } = await activityLogsApi.getRecent(5)
+    if (data) {
+      setActivities(data)
+    }
+    setActivitiesLoading(false)
   }
 
   const statCards = [
@@ -58,6 +72,49 @@ export default function DashboardPage() {
       color: "text-orange-600",
     },
   ]
+
+  const getActionIcon = (action: string) => {
+    switch (action) {
+      case "create":
+        return "➕"
+      case "update":
+        return "✏️"
+      case "delete":
+        return "🗑️"
+      default:
+        return "📝"
+    }
+  }
+
+  const getActionColor = (action: string) => {
+    switch (action) {
+      case "create":
+        return "text-green-600"
+      case "update":
+        return "text-blue-600"
+      case "delete":
+        return "text-red-600"
+      default:
+        return "text-gray-600"
+    }
+  }
+
+  const getEntityTypeLabel = (entityType: string) => {
+    switch (entityType) {
+      case "project":
+        return "Proyek"
+      case "member":
+        return "Anggota"
+      case "publication":
+        return "Publikasi"
+      case "partner":
+        return "Mitra"
+      case "page_content":
+        return "Konten Halaman"
+      default:
+        return entityType
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -92,12 +149,55 @@ export default function DashboardPage() {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>Aktivitas Terbaru</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Aktivitas Terbaru
+          </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="text-center py-8 text-muted-foreground">
-            Belum ada aktivitas terbaru
-          </div>
+          {activitiesLoading ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Memuat aktivitas...
+            </div>
+          ) : activities.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              Belum ada aktivitas terbaru
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {activities.map((activity) => (
+                <div
+                  key={activity.id}
+                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-secondary/50 transition-colors"
+                >
+                  <span className="text-2xl" role="img" aria-label={activity.action}>
+                    {getActionIcon(activity.action)}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground">
+                      {activity.description}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className={`text-xs font-medium ${getActionColor(activity.action)}`}>
+                        {activity.action === 'create' ? 'Dibuat' : activity.action === 'update' ? 'Diperbarui' : 'Dihapus'}
+                      </span>
+                      <span className="text-xs text-muted-foreground">•</span>
+                      <span className="text-xs text-muted-foreground">
+                        {getEntityTypeLabel(activity.entity_type)}
+                      </span>
+                      <span className="text-xs text-muted-foreground">•</span>
+                      <span className="text-xs text-muted-foreground">
+                        {formatDistanceToNow(new Date(activity.created_at), {
+                          addSuffix: true,
+                          locale: idLocale,
+                        })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
 

@@ -1,5 +1,6 @@
-import { createClient } from "@supabase/supabase-js"
-import { redirect } from "next/navigation"
+"use client"
+
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { 
   Home, 
@@ -14,24 +15,44 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Toaster } from "@/components/ui/toaster"
+import { CookieCleanup } from "@/components/cookie-cleanup"
+import { useState } from "react"
 
 const menuItems = [
   { href: "/admin/dashboard", icon: Home, label: "Dashboard" },
-  { href: "/admin/projects", icon: Briefcase, label: "Proyek Riset" },
+  { href: "/admin/projects", icon: Briefcase, label: "Proyek & Riset" },
   { href: "/admin/members", icon: Users, label: "Anggota Tim" },
   { href: "/admin/publications", icon: BookOpen, label: "Publikasi" },
   { href: "/admin/partners", icon: FileText, label: "Mitra & Funding" },
   { href: "/admin/settings", icon: Settings, label: "Pengaturan" },
 ]
 
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const router = useRouter()
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    
+    try {
+      await fetch("/api/auth/logout", { method: "POST" })
+      router.push("/login")
+      router.refresh()
+    } catch (error) {
+      console.error("Logout error:", error)
+      setIsLoggingOut(false)
+    }
+  }
   
   return (
     <div className="flex h-screen bg-background">
+      {/* Cookie cleanup on tab close */}
+      <CookieCleanup />
+      
       {/* Sidebar */}
       <aside className="w-64 border-r bg-card">
         <div className="flex h-full flex-col">
@@ -64,13 +85,17 @@ export default async function AdminLayout({
           {/* User Info & Logout */}
           <div className="p-4">
             <div className="mb-3 text-sm text-muted-foreground">
-              info@iotlab.itb.ac.id
+              Administrator
             </div>
-            <Button variant="outline" className="w-full" size="sm" asChild>
-              <Link href="/login">
-                <LogOut className="mr-2 h-4 w-4" />
-                Keluar
-              </Link>
+            <Button 
+              variant="outline" 
+              className="w-full" 
+              size="sm"
+              onClick={handleLogout}
+              disabled={isLoggingOut}
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              {isLoggingOut ? "Keluar..." : "Keluar"}
             </Button>
           </div>
         </div>

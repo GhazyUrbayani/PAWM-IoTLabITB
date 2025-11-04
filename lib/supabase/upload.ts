@@ -1,24 +1,10 @@
-import { createClient } from "@supabase/supabase-js"
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
 export interface UploadResult {
   url?: string
   error?: string
 }
-
-/**
- * Upload file ke Supabase Storage
- * @param file - File yang akan diupload
- * @param folder - Folder tujuan (projects/members/partners)
- * @returns URL publik file atau error message
- */
 export async function uploadToSupabase(
   file: File,
-  folder: "projects" | "members" | "partners"
+  folder: "projects" | "members" | "partners" | "settings"
 ): Promise<UploadResult> {
   try {
     // Validasi file
@@ -37,60 +23,45 @@ export async function uploadToSupabase(
       return { error: "File harus berupa gambar" }
     }
 
-    // Generate unique filename
-    const timestamp = Date.now()
-    const randomString = Math.random().toString(36).substring(7)
-    const fileExt = file.name.split(".").pop()
-    const fileName = `${timestamp}-${randomString}.${fileExt}`
-    const filePath = `${folder}/${fileName}`
+    // Create FormData
+    const formData = new FormData()
+    formData.append('file', file)
+    formData.append('folder', folder)
 
-    // Upload ke Supabase Storage
-    const { data, error } = await supabase.storage
-      .from("public-assets")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      })
+    // Upload via API route (server-side dengan authenticated client)
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    })
 
-    if (error) {
-      console.error("Upload error:", error)
-      return { error: error.message }
+    const data = await response.json()
+
+    if (!response.ok) {
+      return { error: data.error || 'Upload gagal' }
     }
 
-    // Get public URL
-    const { data: urlData } = supabase.storage
-      .from("public-assets")
-      .getPublicUrl(data.path)
-
-    return { url: urlData.publicUrl }
+    return { url: data.url }
   } catch (error) {
     console.error("Upload exception:", error)
     return { error: "Gagal mengupload file" }
   }
 }
 
-/**
- * Hapus file dari Supabase Storage
- * @param url - Public URL file yang akan dihapus
- */
 export async function deleteFromSupabase(url: string): Promise<{ error?: string }> {
   try {
-    // Extract path from URL
-    const urlObj = new URL(url)
-    const pathParts = urlObj.pathname.split("/public-assets/")
-    if (pathParts.length < 2) {
+    if (!url) {
       return { error: "URL tidak valid" }
     }
-    const filePath = pathParts[1]
 
-    // Delete from storage
-    const { error } = await supabase.storage
-      .from("public-assets")
-      .remove([filePath])
+    // Delete via API route (server-side dengan authenticated client)
+    const response = await fetch(`/api/upload?url=${encodeURIComponent(url)}`, {
+      method: 'DELETE',
+    })
 
-    if (error) {
-      console.error("Delete error:", error)
-      return { error: error.message }
+    const data = await response.json()
+
+    if (!response.ok) {
+      return { error: data.error || 'Delete gagal' }
     }
 
     return {}

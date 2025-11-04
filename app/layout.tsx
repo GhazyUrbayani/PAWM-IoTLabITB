@@ -50,7 +50,7 @@ export default function RootLayout({
         >
           <Analytics />
 
-          <div className="rounded-full border cursor-pointer fixed bottom-35 right-9.5 z-40 flex flex-col hover-lift">
+          <div className="rounded-full border cursor-pointer fixed bottom-25 left-6 z-40 flex flex-col hover-lift">
             <ThemeToggle />
           </div>
           <ScrollToTop />

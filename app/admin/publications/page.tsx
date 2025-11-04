@@ -45,7 +45,6 @@ export default function PublicationsPage() {
     journal: "",
     year: new Date().getFullYear(),
     url: "",
-    doi: "",
   })
 
   useEffect(() => {
@@ -106,7 +105,6 @@ export default function PublicationsPage() {
       journal: formData.journal,
       year: formData.year,
       url: formData.url,
-      doi: formData.doi,
     }
 
     const { error } = editingId
@@ -116,6 +114,19 @@ export default function PublicationsPage() {
     setIsSaving(false)
 
     if (error) {
+      // Jika unauthorized, redirect ke login
+      if (error.toLowerCase().includes('unauthorized')) {
+        toast({
+          title: "Sesi Berakhir",
+          description: "Silakan login kembali",
+          variant: "destructive",
+        })
+        setTimeout(() => {
+          window.location.href = '/login?redirect=' + encodeURIComponent(window.location.pathname)
+        }, 1000)
+        return
+      }
+      
       toast({
         title: "Error",
         description: error,
@@ -139,7 +150,6 @@ export default function PublicationsPage() {
       journal: "",
       year: new Date().getFullYear(),
       url: "",
-      doi: "",
     })
     setEditingId(null)
   }
@@ -157,7 +167,6 @@ export default function PublicationsPage() {
       journal: pub.journal,
       year: pub.year || new Date().getFullYear(),
       url: pub.url || "",
-      doi: pub.doi || "",
     })
     setIsDialogOpen(true)
   }
@@ -229,24 +238,26 @@ export default function PublicationsPage() {
                 {filteredPublications.map((pub) => (
                   <TableRow key={pub.id}>
                     <TableCell className="font-medium max-w-xs">
-                      <div className="flex items-center gap-2">
-                        {pub.title}
+                      <div className="flex items-center gap-2 overflow-hidden">
+                        <span className="truncate">{pub.title}</span>
                         {pub.url && (
                           <a 
                             href={pub.url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="text-primary hover:text-primary/80"
+                            className="text-primary hover:text-primary/80 flex-shrink-0"
                           >
                             <ExternalLink className="h-3 w-3" />
                           </a>
                         )}
                       </div>
                     </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {pub.authors}
+                    <TableCell className="text-muted-foreground max-w-[200px]">
+                      <div className="truncate">{pub.authors}</div>
                     </TableCell>
-                    <TableCell>{pub.journal}</TableCell>
+                    <TableCell className="max-w-[200px]">
+                      <div className="truncate">{pub.journal}</div>
+                    </TableCell>
                     <TableCell>
                       <Badge variant="outline">{pub.year || "-"}</Badge>
                     </TableCell>
@@ -334,17 +345,6 @@ export default function PublicationsPage() {
                 placeholder="2024"
                 value={formData.year}
                 onChange={(e) => setFormData({ ...formData, year: parseInt(e.target.value) })}
-              />
-            </div>
-
-            {/* DOI */}
-            <div className="space-y-2">
-              <Label htmlFor="doi">DOI</Label>
-              <Input
-                id="doi"
-                placeholder="10.1234/example.doi"
-                value={formData.doi}
-                onChange={(e) => setFormData({ ...formData, doi: e.target.value })}
               />
             </div>
 

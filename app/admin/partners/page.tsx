@@ -43,7 +43,6 @@ export default function PartnersPage() {
   const [formData, setFormData] = useState({
     name: "",
     logo_url: "",
-    website_url: "",
     display_order: 0,
   })
   const [logoFile, setLogoFile] = useState<File | null>(null)
@@ -147,7 +146,6 @@ export default function PartnersPage() {
     const payload = {
       name: formData.name,
       logo_url: finalLogoUrl,
-      website_url: formData.website_url,
       display_order: formData.display_order,
     }
 
@@ -178,7 +176,6 @@ export default function PartnersPage() {
     setFormData({
       name: "",
       logo_url: "",
-      website_url: "",
       display_order: 0,
     })
     setLogoFile(null)
@@ -196,7 +193,6 @@ export default function PartnersPage() {
     setFormData({
       name: partner.name,
       logo_url: partner.logo_url,
-      website_url: partner.website_url || "",
       display_order: partner.display_order || 0,
     })
     setLogoPreview(partner.logo_url)
@@ -261,15 +257,14 @@ export default function PartnersPage() {
                 <TableRow>
                   <TableHead>Logo</TableHead>
                   <TableHead>Nama Mitra</TableHead>
-                  <TableHead>Website</TableHead>
                   <TableHead className="text-right">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredPartners.map((partner) => (
                   <TableRow key={partner.id}>
-                    <TableCell>
-                      <div className="h-12 w-24 relative bg-muted rounded">
+                    <TableCell className="w-32">
+                      <div className="h-12 w-24 relative bg-muted rounded flex-shrink-0">
                         <Image
                           src={partner.logo_url}
                           alt={partner.name}
@@ -278,20 +273,8 @@ export default function PartnersPage() {
                         />
                       </div>
                     </TableCell>
-                    <TableCell className="font-medium">{partner.name}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {partner.website_url ? (
-                        <a 
-                          href={partner.website_url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="text-primary hover:underline"
-                        >
-                          {partner.website_url}
-                        </a>
-                      ) : (
-                        "-"
-                      )}
+                    <TableCell className="font-medium max-w-xs">
+                      <div className="truncate">{partner.name}</div>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
@@ -394,18 +377,6 @@ export default function PartnersPage() {
                 placeholder="Masukkan nama perusahaan/organisasi..."
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              />
-            </div>
-
-            {/* Website URL */}
-            <div className="space-y-2">
-              <Label htmlFor="website">Website</Label>
-              <Input
-                id="website"
-                type="url"
-                placeholder="https://..."
-                value={formData.website_url}
-                onChange={(e) => setFormData({ ...formData, website_url: e.target.value })}
               />
             </div>
 

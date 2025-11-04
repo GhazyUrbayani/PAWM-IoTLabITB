@@ -1,18 +1,83 @@
 "use client"
 
 import type React from "react"
+import { useState, useEffect } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Container } from "@/components/container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { MapPin, Mail, Phone, CheckCircle } from "lucide-react"
-import { useForm, ValidationError } from "@formspree/react"
+import { MapPin, Mail, Phone, CheckCircle, Loader2, AlertCircle } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { pageContentApi } from "@/lib/api/client"
 
 export default function ContactPage() {
-  const [state, handleSubmit] = useForm(process.env.NEXT_PUBLIC_FORM!)
+  const [loading, setLoading] = useState(true)
+  const [submitting, setSubmitting] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [submitError, setSubmitError] = useState("")
+  const [contactEmail, setContactEmail] = useState("")
+  const [contactPhone, setContactPhone] = useState("")
+  const [contactAddress, setContactAddress] = useState("")
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: ""
+  })
+
+  useEffect(() => {
+    fetchContactInfo()
+  }, [])
+
+  const fetchContactInfo = async () => {
+    setLoading(true)
+    const { data } = await pageContentApi.getAll()
+    if (data) {
+      const contentMap = new Map(data.map((item: any) => [item.key, item.value]))
+      setContactEmail(contentMap.get("contact_email") || "")
+      setContactPhone(contentMap.get("contact_phone") || "")
+      setContactAddress(contentMap.get("contact_address") || "")
+    }
+    setLoading(false)
+  }
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setSubmitting(true)
+    setSubmitError("")
+    setSubmitSuccess(false)
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setSubmitSuccess(true)
+        setFormData({ name: "", email: "", subject: "", message: "" })
+      } else {
+        setSubmitError(result.error || "Gagal mengirim email. Silakan coba lagi.")
+      }
+    } catch (error) {
+      setSubmitError("Terjadi kesalahan. Silakan coba lagi.")
+    } finally {
+      setSubmitting(false)
+    }
+  }
 
   return (
     <>
@@ -37,7 +102,7 @@ export default function ContactPage() {
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-6">
               {/* Success Alert */}
-              {state.succeeded && (
+              {submitSuccess && (
                 <Alert variant="default" className="bg-green-50 border border-green-200">
                   <CheckCircle className="h-4 w-4 text-green-600" />
                   <AlertTitle className="text-green-800 font-serif">
@@ -46,6 +111,15 @@ export default function ContactPage() {
                   <AlertDescription className="text-green-700">
                     Terima kasih telah menghubungi kami. Tim kami akan segera merespons Anda.
                   </AlertDescription>
+                </Alert>
+              )}
+
+              {/* Error Alert */}
+              {submitError && (
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertTitle>Gagal Mengirim</AlertTitle>
+                  <AlertDescription>{submitError}</AlertDescription>
                 </Alert>
               )}
 
@@ -62,8 +136,10 @@ export default function ContactPage() {
                     type="text"
                     name="name"
                     placeholder="Nama Anda"
+                    value={formData.name}
+                    onChange={handleInputChange}
                     required
-                    disabled={state.submitting}
+                    disabled={submitting}
                   />
                 </div>
 
@@ -79,14 +155,10 @@ export default function ContactPage() {
                     type="email"
                     name="email"
                     placeholder="anda@email.com"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     required
-                    disabled={state.submitting}
-                  />
-                  <ValidationError
-                    prefix="Email"
-                    field="email"
-                    errors={state.errors}
-                    className="text-sm text-destructive mt-1"
+                    disabled={submitting}
                   />
                 </div>
 
@@ -102,8 +174,10 @@ export default function ContactPage() {
                     type="text"
                     name="subject"
                     placeholder="Subjek pesan Anda"
+                    value={formData.subject}
+                    onChange={handleInputChange}
                     required
-                    disabled={state.submitting}
+                    disabled={submitting}
                   />
                 </div>
 
@@ -119,14 +193,10 @@ export default function ContactPage() {
                     name="message"
                     rows={6}
                     placeholder="Tulis pesan Anda di sini..."
+                    value={formData.message}
+                    onChange={handleInputChange}
                     required
-                    disabled={state.submitting}
-                  />
-                  <ValidationError
-                    prefix="Message"
-                    field="message"
-                    errors={state.errors}
-                    className="text-sm text-destructive mt-1"
+                    disabled={submitting}
                   />
                 </div>
 
@@ -135,9 +205,16 @@ export default function ContactPage() {
                     type="submit"
                     size="lg"
                     className="w-full hover-lift cursor-pointer"
-                    disabled={state.submitting}
+                    disabled={submitting}
                   >
-                    {state.submitting ? "Mengirim..." : "Kirim Pesan"}
+                    {submitting ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Mengirim...
+                      </>
+                    ) : (
+                      "Kirim Pesan"
+                    )}
                   </Button>
                 </div>
               </form>
@@ -146,58 +223,64 @@ export default function ContactPage() {
             {/* Info Kontak & Peta */}
             <div className="space-y-8">
               <h2 className="mb-8">Informasi Kontak</h2>
-              <div className="space-y-6">
-                {/* Alamat */}
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
-                    <MapPin size={24} className="text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="font-serif font-bold text-foreground mb-1">
-                      Alamat
-                    </h3>
-                    <p className="text-muted-foreground">
-                      LabTek VIII ITB, Jl. Ganesa No.10, Bandung
-                    </p>
-                  </div>
+              {loading ? (
+                <div className="flex justify-center items-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
                 </div>
+              ) : (
+                <div className="space-y-6">
+                  {/* Alamat */}
+                  <div className="flex gap-4">
+                    <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
+                      <MapPin size={24} className="text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif font-bold text-foreground mb-1">
+                        Alamat
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {contactAddress}
+                      </p>
+                    </div>
+                  </div>
 
-                {/* Email */}
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
-                    <Mail size={24} className="text-accent" />
+                  {/* Email */}
+                  <div className="flex gap-4">
+                    <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
+                      <Mail size={24} className="text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif font-bold text-foreground mb-1">
+                        Email
+                      </h3>
+                      <a
+                        href={`mailto:${contactEmail}`}
+                        className="text-accent hover:text-accent/80 transition-colors"
+                      >
+                        {contactEmail}
+                      </a>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-serif font-bold text-foreground mb-1">
-                      Email
-                    </h3>
-                    <a
-                      href="mailto:info@iotlab.itb.ac.id"
-                      className="text-accent hover:text-accent/80 transition-colors"
-                    >
-                      info@iotlab.itb.ac.id
-                    </a>
-                  </div>
-                </div>
 
-                {/* Phone */}
-                <div className="flex gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
-                    <Phone size={24} className="text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="font-serif font-bold text-foreground mb-1">
-                      Telepon
-                    </h3>
-                    <a
-                      href="tel:+622751506"
-                      className="text-accent hover:text-accent/80 transition-colors"
-                    >
-                      +62 (274) 515-06
-                    </a>
+                  {/* Phone */}
+                  <div className="flex gap-4">
+                    <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
+                      <Phone size={24} className="text-accent" />
+                    </div>
+                    <div>
+                      <h3 className="font-serif font-bold text-foreground mb-1">
+                        Telepon
+                      </h3>
+                      <a
+                        href={`tel:${contactPhone}`}
+                        className="text-accent hover:text-accent/80 transition-colors"
+                      >
+                        {contactPhone}
+                      </a>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               {/* Map Placeholder */}
               <div className="relative h-64 rounded-lg overflow-hidden border border-border bg-secondary">

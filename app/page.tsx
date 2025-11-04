@@ -33,12 +33,16 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   
   // State untuk page content
-  const [heroTitle, setHeroTitle] = useState("Inovasi Terhubung: Masa Depan Riset IoT")
-  const [heroSubtitle, setHeroSubtitle] = useState("Menjembatani dunia fisik dan digital melalui penelitian mutakhir di bidang sensor networks, big data, dan intelligent systems.")
-  const [aboutTitle, setAboutTitle] = useState("Sekilas Tentang IoT Lab ITB")
+  const [heroTitle, setHeroTitle] = useState("")
+  const [heroSubtitle, setHeroSubtitle] = useState("")
+  const [heroImage, setHeroImage] = useState("")
+  const [aboutTitle, setAboutTitle] = useState("")
   const [aboutContent, setAboutContent] = useState("")
-  const [historyTitle, setHistoryTitle] = useState("IoT & Future Digital Economy Lab")
+  const [aboutImage, setAboutImage] = useState("")
+  const [historyTitle, setHistoryTitle] = useState("")
   const [historyContent, setHistoryContent] = useState("")
+  const [historyImage, setHistoryImage] = useState("")
+  const [contactEmail, setContactEmail] = useState("")
 
   useEffect(() => {
     fetchAllData()
@@ -68,12 +72,16 @@ export default function Home() {
     if (pageContentData) {
       const contentMap = new Map(pageContentData.map((item: any) => [item.key, item.value]))
       
-      if (contentMap.get("hero_title")) setHeroTitle(contentMap.get("hero_title")!)
-      if (contentMap.get("hero_subtitle")) setHeroSubtitle(contentMap.get("hero_subtitle")!)
-      if (contentMap.get("about_title")) setAboutTitle(contentMap.get("about_title")!)
-      if (contentMap.get("about_content")) setAboutContent(contentMap.get("about_content")!)
-      if (contentMap.get("history_title")) setHistoryTitle(contentMap.get("history_title")!)
-      if (contentMap.get("history_content")) setHistoryContent(contentMap.get("history_content")!)
+      setHeroTitle(contentMap.get("hero_title") || "")
+      setHeroSubtitle(contentMap.get("hero_subtitle") || "")
+      setHeroImage(contentMap.get("hero_image") || "")
+      setAboutTitle(contentMap.get("about_title") || "")
+      setAboutContent(contentMap.get("about_content") || "")
+      setAboutImage(contentMap.get("about_image") || "")
+      setHistoryTitle(contentMap.get("history_title") || "")
+      setHistoryContent(contentMap.get("history_content") || "")
+      setHistoryImage(contentMap.get("history_image") || "")
+      setContactEmail(contentMap.get("contact_email") || "")
     }
     
     setLoading(false)
@@ -92,7 +100,7 @@ export default function Home() {
       <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-            src="/hero-sec.jpg"
+            src={heroImage || "/hero-sec.jpg"}
             alt="IoT Lab"
             fill
             className="object-cover blur-lg brightness-75"
@@ -127,8 +135,8 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/Lab IoT.jpg"
-                alt="Lab IoT ITB"
+                src={aboutImage || "/Lab IoT.jpg"}
+                alt="Lab IoT"
                 width={600}
                 height={400}
                 className="object-cover w-full h-full"
@@ -140,23 +148,7 @@ export default function Home() {
               </span>
               <h2 className="mb-4 mt-2">{aboutTitle}</h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
-                {aboutContent ? (
-                  <p>{aboutContent}</p>
-                ) : (
-                  <>
-                    <p>
-                      Diresmikan pada tahun 2019 melalui kerjasama strategis dengan
-                      Indosat Ooredoo, IoT Lab ITB didedikasikan untuk mendorong
-                      inovasi di era Industri 4.0.
-                    </p>
-                    <p>
-                      Kami fokus menghasilkan ide inovatif, referensi desain produk,
-                      dan solusi terapan guna menjawab tantangan nyata di industri
-                      dan masyarakat, sekaligus mendukung program "Making Indonesia
-                      4.0".
-                    </p>
-                  </>
-                )}
+                <p>{aboutContent}</p>
               </div>
               <div className="mt-8">
                 <Button asChild size="lg" variant="outline">
@@ -184,32 +176,14 @@ export default function Home() {
                 {historyTitle}
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
-                {historyContent ? (
-                  <p>{historyContent}</p>
-                ) : (
-                  <>
-                    <p>
-                      Diresmikan pada 18 Maret 2019 oleh Menteri Perindustrian
-                      Airlangga Hartarto, "Internet of Things (IoT) and Future
-                      Digital Economy Lab" di Institut Teknologi Bandung (ITB) hadir
-                      atas kerjasama dengan Indosat Ooredoo.
-                    </p>
-                    <p>
-                      Peresmian ini merupakan upaya mendorong inovasi dan kemajuan
-                      dalam bidang ekonomi digital, terutama di era industri 4.0. Lab
-                      ini diharapkan mampu menghasilkan ide inovasi, referensi desain
-                      produk, dan solusi guna menjawab kasus-kasus IoT yang dapat
-                      dikembangkan dalam skala industri.
-                    </p>
-                  </>
-                )}
+                <p>{historyContent}</p>
               </div>
             </div>
             {/* Kolom Gambar */}
             <div className="rounded-lg overflow-hidden shadow-lg">
               <Image
-                src="/peresmian.jpeg"
-                alt="Peresmian IoT Lab ITB (Dok. Humas ITB)"
+                src={historyImage || "/peresmian.jpeg"}
+                alt="Sejarah Lab"
                 width={600}
                 height={400}
                 className="object-cover w-full h-full"

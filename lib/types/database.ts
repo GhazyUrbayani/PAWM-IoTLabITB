@@ -20,8 +20,6 @@ export type Member = {
   name: string
   role: string
   image_url: string | null
-  bio: string | null
-  email: string | null
   display_order: number
   created_at: string
   updated_at: string
@@ -38,7 +36,6 @@ export type Publication = {
   journal: string
   year: number | null
   url: string | null
-  doi: string | null
   created_at: string
   updated_at: string
 }
@@ -51,7 +48,6 @@ export type Partner = {
   id: string
   name: string
   logo_url: string
-  website_url: string | null
   display_order: number
   created_at: string
   updated_at: string

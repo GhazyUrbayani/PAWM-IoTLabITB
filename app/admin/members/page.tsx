@@ -45,8 +45,6 @@ export default function MembersPage() {
   const [formData, setFormData] = useState({
     name: "",
     role: "",
-    bio: "",
-    email: "",
     image_url: "",
     display_order: 0,
   })
@@ -141,8 +139,6 @@ export default function MembersPage() {
     const payload = {
       name: formData.name,
       role: formData.role,
-      bio: formData.bio,
-      email: formData.email,
       image_url: finalImageUrl,
       display_order: formData.display_order,
     }
@@ -174,8 +170,6 @@ export default function MembersPage() {
     setFormData({
       name: "",
       role: "",
-      bio: "",
-      email: "",
       image_url: "",
       display_order: 0,
     })
@@ -194,8 +188,6 @@ export default function MembersPage() {
     setFormData({
       name: member.name,
       role: member.role,
-      bio: member.bio || "",
-      email: member.email || "",
       image_url: member.image_url || "",
       display_order: member.display_order || 0,
     })
@@ -261,27 +253,25 @@ export default function MembersPage() {
                 <TableRow>
                   <TableHead>Nama</TableHead>
                   <TableHead>Peran</TableHead>
-                  <TableHead>Email</TableHead>
                   <TableHead className="text-right">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filteredMembers.map((member) => (
                   <TableRow key={member.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar>
+                    <TableCell className="max-w-xs">
+                      <div className="flex items-center gap-3 overflow-hidden">
+                        <Avatar className="flex-shrink-0">
                           <AvatarImage src={member.image_url || ""} alt={member.name} />
                           <AvatarFallback>
                             {member.name.split(" ").map(n => n[0]).join("")}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="font-medium">{member.name}</span>
+                        <span className="font-medium truncate">{member.name}</span>
                       </div>
                     </TableCell>
-                    <TableCell>{member.role}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {member.email || "-"}
+                    <TableCell className="max-w-[200px]">
+                      <div className="truncate">{member.role}</div>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">
@@ -395,18 +385,6 @@ export default function MembersPage() {
               />
             </div>
 
-            {/* Email */}
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="email@example.com"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              />
-            </div>
-
             {/* Display Order */}
             <div className="space-y-2">
               <Label htmlFor="display_order">Urutan Tampilan</Label>
@@ -420,18 +398,6 @@ export default function MembersPage() {
               <p className="text-sm text-muted-foreground">
                 Angka lebih kecil akan tampil lebih dulu
               </p>
-            </div>
-
-            {/* Bio */}
-            <div className="space-y-2">
-              <Label htmlFor="bio">Biografi</Label>
-              <Textarea
-                id="bio"
-                placeholder="Deskripsi singkat tentang anggota..."
-                rows={4}
-                value={formData.bio}
-                onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-              />
             </div>
           </div>
 

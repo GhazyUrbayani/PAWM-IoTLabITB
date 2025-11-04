@@ -164,6 +164,7 @@ export default function ProjectsPage() {
       category: formData.category,
       slug: formData.slug,
       image_url: finalImageUrl,
+      members: [], // Default ke array kosong untuk new projects
     }
 
     const { error } = editingId
@@ -229,7 +230,7 @@ export default function ProjectsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Proyek Riset</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Proyek & Riset</h1>
           <p className="text-muted-foreground mt-2">
             Kelola proyek riset laboratorium
           </p>
@@ -299,12 +300,14 @@ export default function ProjectsPage() {
               <TableBody>
                 {filteredProjects.map((project) => (
                   <TableRow key={project.id}>
-                    <TableCell className="font-medium">{project.title}</TableCell>
+                    <TableCell className="font-medium max-w-xs">
+                      <div className="truncate">{project.title}</div>
+                    </TableCell>
                     <TableCell>
                       <Badge variant="outline">{project.category}</Badge>
                     </TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {project.slug}
+                    <TableCell className="text-muted-foreground max-w-[200px]">
+                      <div className="truncate">{project.slug}</div>
                     </TableCell>
                     <TableCell className="text-right">
                       <div className="flex justify-end gap-2">

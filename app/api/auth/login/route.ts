@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js"
+import { createClient } from "@/lib/supabase/server"
 import { NextResponse, type NextRequest } from "next/server"
 
 export async function POST(request: NextRequest) {
@@ -10,10 +10,8 @@ export async function POST(request: NextRequest) {
       { status: 400 },
     )
   }
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-  )
+
+  const supabase = await createClient()
 
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -29,7 +27,29 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    return NextResponse.json({ session: data.session }, { status: 200 })
+    // Create response with session
+    const response = NextResponse.json({ session: data.session }, { status: 200 })
+    
+    // Set secure HTTP-only cookies
+    if (data.session) {
+      response.cookies.set('auth-token', data.session.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        path: '/',
+      })
+      
+      response.cookies.set('isAuthenticated', 'true', {
+        httpOnly: false, // Accessible by client for UI
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+        path: '/',
+      })
+    }
+
+    return response
   } catch (err) {
     console.error("Internal server error:", err)
     return NextResponse.json(

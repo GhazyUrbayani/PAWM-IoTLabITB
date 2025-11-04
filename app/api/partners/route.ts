@@ -1,103 +1,77 @@
-import { createClient } from "@supabase/supabase-js"
+import { createClient } from "@/lib/supabase/server"
 import { NextResponse } from "next/server"
 
-// GET - Fetch all partners
 export async function GET(request: Request) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-
-  if (!supabaseUrl || !supabaseKey) {
-    console.error("Missing Supabase credentials")
-    return NextResponse.json(
-      { error: "Server configuration error" },
-      { status: 500 }
-    )
-  }
-
-  const supabase = createClient(supabaseUrl, supabaseKey)
-
+  const supabase = await createClient()
+  
   try {
     const { data, error } = await supabase
       .from("partners")
       .select("*")
-      .order("display_order", { ascending: true })
+      .order("name", { ascending: true })
 
     if (error) {
-      console.error("Supabase error:", error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
     return NextResponse.json({ data }, { status: 200 })
   } catch (error: any) {
-    console.error("GET /api/partners error:", error)
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
 
-// POST - Create new partner
 export async function POST(request: Request) {
-  const body = await request.json()
-  const { name, logo_url, website_url, display_order } = body
-
-  // Validation
-  if (!name || !logo_url) {
-    return NextResponse.json(
-      { error: "Name and logo URL are required" },
-      { status: 400 }
-    )
-  }
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
+  const supabase = await createClient()
+  
   try {
+    const body = await request.json()
+    const { name, logo_url, display_order } = body
+
+    if (!name || !logo_url) {
+      return NextResponse.json({ error: "Name and logo_url are required" }, { status: 400 })
+    }
+
+    const payload = {
+      name,
+      logo_url,
+      display_order: display_order || 0,
+    }
+
     const { data, error } = await supabase
       .from("partners")
-      .insert([
-        {
-          name,
-          logo_url,
-          website_url: website_url || null,
-          display_order: display_order || 0,
-        },
-      ])
+      .insert([payload])
       .select()
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    return NextResponse.json({ data }, { status: 201 })
+    return NextResponse.json({ data: data[0] }, { status: 201 })
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
 
-// PUT - Update partner
 export async function PUT(request: Request) {
-  const body = await request.json()
-  const { id, name, logo_url, website_url, display_order } = body
-
-  if (!id) {
-    return NextResponse.json({ error: "Partner ID is required" }, { status: 400 })
-  }
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
+  const supabase = await createClient()
+  
   try {
+    const body = await request.json()
+    const { id, name, logo_url, display_order } = body
+
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 })
+    }
+
+    const updateData = {
+      name,
+      logo_url,
+      display_order: display_order !== undefined ? display_order : 0,
+    }
+
     const { data, error } = await supabase
       .from("partners")
-      .update({
-        name,
-        logo_url,
-        website_url,
-        display_order,
-      })
+      .update(updateData)
       .eq("id", id)
       .select()
 
@@ -105,34 +79,33 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    return NextResponse.json({ data }, { status: 200 })
+    return NextResponse.json({ data: data[0] }, { status: 200 })
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }
 }
 
-// DELETE - Delete partner
 export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const id = searchParams.get("id")
-
-  if (!id) {
-    return NextResponse.json({ error: "Partner ID is required" }, { status: 400 })
-  }
-
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-
+  const supabase = await createClient()
+  
   try {
-    const { error } = await supabase.from("partners").delete().eq("id", id)
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get("id")
+
+    if (!id) {
+      return NextResponse.json({ error: "ID is required" }, { status: 400 })
+    }
+
+    const { error } = await supabase
+      .from("partners")
+      .delete()
+      .eq("id", id)
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
 
-    return NextResponse.json({ message: "Partner deleted successfully" }, { status: 200 })
+    return NextResponse.json({ message: "Deleted successfully" }, { status: 200 })
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 })
   }

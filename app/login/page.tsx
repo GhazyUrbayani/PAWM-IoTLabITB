@@ -72,7 +72,7 @@ export default function AdminLoginPage() {
   return (
     <>
       <Navbar />
-      <Container className="flex items-center justify-center min-h-[80vh] py-12">
+      <Container className="flex items-center justify-center min-h-screen pt-32 pb-12">
         <Card className="w-full max-w-md shadow-lg">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl font-serif">Admin Login</CardTitle>
@@ -96,7 +96,6 @@ export default function AdminLoginPage() {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@iotlab.itb.ac.id"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -114,7 +113,11 @@ export default function AdminLoginPage() {
                   disabled={isLoading}
                 />
               </div>
-              <Button type="submit" className="w-full hover-lift cursor-pointer" disabled={isLoading}>
+              <Button 
+                type="submit" 
+                className="w-full hover-lift cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all px-8 py-3 rounded-lg" 
+                disabled={isLoading}
+              >
                 {isLoading ? "Memverifikasi..." : "Log In"}
               </Button>
             </form>

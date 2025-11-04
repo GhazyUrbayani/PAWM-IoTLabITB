@@ -35,21 +35,21 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`transition-all duration-300 rounded-full ${
+          className={`transition-all duration-300 rounded-lg ${
             isScrolled
               ? "backdrop-blur-sm border border-border shadow-lg shadow-accent/10"
               : "backdrop-blur-lg border border-border/50"
           }`}
         >
-          <div className="flex justify-between items-center px-10 h-15">
+          <div className="flex justify-between items-center px-4 sm:px-10 h-15">
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <Image
                 src="/logo.png"
                 alt="IoT Lab Logo"
-                width={160}
-                height={160}
-                className="object-contain"
+                width={120}
+                height={120}
+                className="object-contain md:w-[160px] md:h-[160px]"
               />
             </Link>
 
@@ -80,7 +80,7 @@ export function Navbar() {
                 variant="ghost"
                 size="sm"
                 asChild
-                className="hidden md:flex rounded-full"
+                className="hidden md:flex rounded-lg"
               >
                 <Link href="/login">
                   <User className="h-4 w-4 mr-2" />
@@ -100,29 +100,31 @@ export function Navbar() {
 
           {/* Mobile Navigation */}
           {isOpen && (
-            <div className="md:hidden px-6 pb-4 space-y-2 animate-in fade-in slide-in-from-top-2">
-              {navLinks.map((link) => (
+            <div className="md:hidden px-4 pb-4 animate-in fade-in slide-in-from-top-2 bg-background/95 backdrop-blur-sm border-t border-border/50">
+              <div className="py-2 space-y-1">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`block px-4 py-2 transition-all ${
+                      isActive(link.href)
+                        ? "bg-accent/10 text-accent font-medium"
+                        : "text-muted-foreground hover:text-accent hover:bg-accent/5"
+                    }`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
                 <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`block px-4 py-2 rounded-full transition-all ${
-                    isActive(link.href)
-                      ? "bg-accent text-primary-foreground"
-                      : "text-muted-foreground hover:text-accent hover:bg-secondary/50"
-                  }`}
+                  href="/login"
+                  className="flex items-center gap-2 px-4 py-2 transition-all text-muted-foreground hover:text-accent hover:bg-accent/5"
                   onClick={() => setIsOpen(false)}
                 >
-                  {link.label}
+                  <User className="h-4 w-4" />
+                  <span>Admin Login</span>
                 </Link>
-              ))}
-              <Link
-                href="/login"
-                className="flex items-center gap-2 px-4 py-2 rounded-full transition-all text-muted-foreground hover:text-accent hover:bg-secondary/50"
-                onClick={() => setIsOpen(false)}
-              >
-                <User className="h-4 w-4" />
-                <span>Admin Login</span>
-              </Link>
+              </div>
             </div>
           )}
         </div>

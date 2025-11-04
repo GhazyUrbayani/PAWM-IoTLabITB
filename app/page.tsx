@@ -97,7 +97,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative h-[80vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen pt-24 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
             src={heroImage || "/hero-sec.jpg"}
@@ -118,11 +118,14 @@ export default function Home() {
               {heroSubtitle}
             </p>
             <div className="animate-fade-in-up animation-delay-200">
-              <Button asChild size="lg">
-                <Link href="#riset">
-                  {" "}
-                  Lihat Proyek Kami{" "}
-                  <ArrowRight className="w-4 h-4 ml-2" />
+              <Button 
+                asChild 
+                size="lg"
+                className="bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all"
+              >
+                <Link href="#riset" className="px-8 py-3">
+                  Lihat Proyek Kami
+                  <ArrowRight className="w-5 h-5 ml-2" />
                 </Link>
               </Button>
             </div>
@@ -169,11 +172,8 @@ export default function Home() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Kolom Teks Sejarah */}
             <div>
-              <span className="text-sm font-semibold text-accent uppercase tracking-wider">
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 Sejarah Kami
-              </span>
-              <h2 className="mb-4">
-                {historyTitle}
               </h2>
               <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>{historyContent}</p>
@@ -279,13 +279,14 @@ export default function Home() {
                   className="overflow-hidden hover-lift transition-all"
                 >
                   <Link href={`/research/${project.slug}`}>
-                    <div className="relative h-48 w-full">
+                    <div className="relative aspect-[16/9] w-full">
                       {project.image_url && (
                         <Image
                           src={project.image_url}
                           alt={project.title}
                           fill
-                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          className="object-cover w-full h-full"
                         />
                       )}
                     </div>

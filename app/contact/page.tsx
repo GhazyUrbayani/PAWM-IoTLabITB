@@ -84,10 +84,10 @@ export default function ContactPage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative mt-30 mb-5 bg-secondary/30">
+      <section className="relative pt-32 pb-12">
         <Container>
           <div className="text-center">
-            <h1 className="mb-4">Hubungi Kami</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Hubungi Kami</h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Kami siap menjawab pertanyaan Anda tentang penelitian, kolaborasi,
               atau kunjungan ke lab
@@ -136,6 +136,7 @@ export default function ContactPage() {
                     type="text"
                     name="name"
                     placeholder="Nama Anda"
+                    className="placeholder:text-gray-400"
                     value={formData.name}
                     onChange={handleInputChange}
                     required
@@ -155,6 +156,7 @@ export default function ContactPage() {
                     type="email"
                     name="email"
                     placeholder="anda@email.com"
+                    className="placeholder:text-gray-400"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
@@ -174,6 +176,7 @@ export default function ContactPage() {
                     type="text"
                     name="subject"
                     placeholder="Subjek pesan Anda"
+                    className="placeholder:text-gray-400"
                     value={formData.subject}
                     onChange={handleInputChange}
                     required
@@ -193,6 +196,7 @@ export default function ContactPage() {
                     name="message"
                     rows={6}
                     placeholder="Tulis pesan Anda di sini..."
+                    className="placeholder:text-gray-400"
                     value={formData.message}
                     onChange={handleInputChange}
                     required
@@ -204,7 +208,7 @@ export default function ContactPage() {
                   <Button
                     type="submit"
                     size="lg"
-                    className="w-full hover-lift cursor-pointer"
+                    className="w-full hover-lift cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all px-8 py-3 rounded-lg"
                     disabled={submitting}
                   >
                     {submitting ? (

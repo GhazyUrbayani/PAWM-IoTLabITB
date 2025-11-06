@@ -1,152 +1,114 @@
-# IoT Lab Website
+# Website Profil & CMS Laboratorium IoT ITB (TuBes PAWM)
 
-Website resmi laboratorium IoT yang dibangun dengan Next.js 16, Supabase, dan Resend.
+[![Status Proyek](https://img.shields.io/badge/Status-Development-blue.svg)](https://github.com/GhazyUrbayani/PAWM-IoTLabITB)
+[![Tech Stack](https://img.shields.io/badge/Stack-Next.js_16-black?logo=nextdotjs)](https://nextjs.org/)
+[![Database](https://img.shields.io/badge/Database-Supabase-green?logo=supabase)](https://supabase.io/)
+[![Deployment](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com/)
 
-## Tech Stack
+Website profil resmi untuk Laboratorium Riset IoT, dikembangkan sebagai Tugas Besar mata kuliah Pengembangan Aplikasi Web dan Mobile (PAWM).
 
-- **Framework**: Next.js 16.0.0 (App Router)
-- **Database**: Supabase (PostgreSQL)
-- **Email Service**: Resend
-- **UI Components**: Radix UI, shadcn/ui
-- **Styling**: Tailwind CSS
-- **Language**: TypeScript
-- **Package Manager**: pnpm
+Ini bukan hanya *website* statis, tetapi sebuah *Content Management System* (CMS) penuh yang memungkinkan admin lab mengelola seluruh konten halaman depan secara dinamis melalui *dashboard* admin yang terproteksi.
 
-## Features
+## ✨ Fitur Utama (Sesuai Kode Final)
 
-- ✅ Dynamic content management (Hero, About, History)
-- ✅ Image upload untuk semua section (Hero, About, History)
-- ✅ Admin dashboard dengan authentication
-- ✅ Project/Research management
-- ✅ Team members management
-- ✅ Publications management
-- ✅ Partners/Funding management
-- ✅ Contact form dengan Resend email service
-- ✅ Dark/Light theme toggle
-- ✅ Responsive design
-- ✅ Smart cookie management (persist on refresh, clear on close)
+* **Arsitektur Single-Page:** Semua konten utama (Sejarah, Member, Riset, Publikasi, Partner) ditampilkan di Halaman Utama sesuai arahan Dosen Koordinator.
+* **Panel Admin Lengkap:** *Dashboard* admin (`/admin`) terproteksi dengan autentikasi Supabase.
+* **Manajemen Konten Halaman:** Admin dapat mengedit Teks Hero, Sejarah, dan gambar terkait melalui halaman *Settings* (`/admin/settings`) yang terhubung ke tabel `page_content`.
+* **CRUD Penuh:** Fungsionalitas *Create, Read, Update, Delete* (CRUD) penuh untuk:
+    * Riset & Proyek
+    * Member Lab
+    * Publikasi Ilmiah
+    * Partners & Funding
+* **Upload Gambar:** *Upload* file terintegrasi ke Supabase Storage (untuk foto member, logo partner, dll).
+* **Filter Proyek:** Fitur *filter* proyek interaktif di Halaman Utama.
+* **Formulir Kontak:** Halaman kontak terhubung ke API *backend* (`/api/send-email`) menggunakan Resend.
+* **Fitur Tambahan:** *Dark/Light theme toggle*, Tombol *Scroll to Top*, *Loading skeletons*, dan *layout* responsif.
 
-## Environment Variables
+## 🛠️ Tumpukan Teknologi (Tech Stack)
 
-Copy `.env.local.example` ke `.env.local` dan isi dengan nilai yang sesuai:
+* **Framework**: Next.js 16 (App Router)
+* **Bahasa**: TypeScript
+* **Database (BaaS)**: Supabase (PostgreSQL)
+* **Autentikasi**: Supabase Auth
+* **File Storage**: Supabase Storage
+* **Email Service**: Resend
+* **UI**: Tailwind CSS & shadcn/ui
+* **Package Manager**: pnpm
+* **Deployment**: Vercel
 
-```bash
-# Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+## ⚙️ Pengaturan Lokal
 
-# Resend Email Service
-# Get your API key from: https://resend.com/api-keys
-RESEND_API_KEY=re_your_resend_api_key_here
-```
+### 1. Setup Environment Variables
 
-### Cara Mendapatkan API Keys
-
-#### Supabase
-
-1. Buat project baru di [Supabase](https://supabase.com/)
-2. Pergi ke Settings → API
-3. Copy **URL** dan **anon/public key**
-
-#### Resend
-
-1. Daftar di [Resend](https://resend.com/)
-2. Pergi ke [API Keys](https://resend.com/api-keys)
-3. Buat API key baru
-4. **Penting**: Untuk production, verifikasi domain Anda terlebih dahulu
-
-## Database Setup
-
-1. Jalankan script SQL di file `SETUP_PAGE_CONTENT_TABLE.sql` di Supabase SQL Editor
-2. Script ini akan membuat table `page_content` dengan semua field yang diperlukan
-
-## Installation
+Salin `.env.example` (jika ada) atau buat file baru bernama `.env.local` di *root* proyek. Isi dengan kredensial Supabase dan Resend kamu.
 
 ```bash
-# Install dependencies
+# Kredensial dari Supabase Dashboard -> Settings -> API
+NEXT_PUBLIC_SUPABASE_URL=https://<id-proyek-kamu>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<kunci_anon_publik_kamu>
+
+# Kredensial dari Resend Dashboard -> API Keys
+RESEND_API_KEY=re_kunci_api_resend_kamu
+
+## 2. Setup Database Supabase
+Seluruh skema database, RLS (Row Level Security), dan data awal ada di satu file.
+* 1. Buka dashboard proyek Supabase kamu.
+* 2. Pergi ke SQL Editor.
+* 3. Salin seluruh isi dari file database-schema.sql.
+* 4. Tempel ke SQL Editor dan klik "RUN".
+Ini akan membuat tabel projects, members, publications, partners, page_content, activity_logs dan mengaktifkan RLS.
+
+## 3. Instalasi & Menjalankan Proyek
+Proyek ini menggunakan pnpm.
+# 1. Install dependencies
 pnpm install
 
-# Run development server
+# 2. Jalankan development server
 pnpm dev
+# 3. Buka http://localhost:3000 di browser kamu.
 
-# Build for production
-pnpm build
+## 🗂️ Struktur Proyek (Final)
 
-# Start production server
-pnpm start
-```
-
-## Admin Access
-
-1. Navigasi ke `/admin/login`
-2. Login dengan email dan password yang terdaftar di Supabase `users` table
-3. Akses admin dashboard untuk manage content
-
-## Upload Folders
-
-Upload folders yang digunakan di Supabase Storage:
-
-- `settings/` - Hero, About, History images
-- `projects/` - Project images
-- `members/` - Team member photos
-- `partners/` - Partner logos
-
-## Contact Form
-
-Contact form menggunakan Resend email service. Email akan dikirim ke alamat yang diset di page_content table (key: `contact_email`).
-
-**Catatan Penting untuk Production:**
-
-- Update `from` address di `app/api/send-email/route.ts` dengan domain yang sudah diverifikasi di Resend
-- Default: `onboarding@resend.dev` (hanya untuk testing)
-
-## Cookie Management
-
-Website menggunakan smart cookie cleanup:
-
-- **Persist**: Cookie tetap ada saat refresh/reload page
-- **Clear**: Cookie dihapus otomatis saat tab/browser ditutup (bukan saat refresh)
-- **Timeout**: Cookie dihapus setelah 30 menit tidak aktif
-
-## Project Structure
-
-```
 app/
-├── admin/          # Admin panel (protected routes)
-├── api/            # API routes (auth, upload, send-email)
-├── contact/        # Contact page
-├── research/       # Research detail pages
-├── page.tsx        # Homepage
-└── ...
+├── (public)/                     # Grup route untuk halaman publik
+│   ├── contact/
+│   │   └── page.tsx              # Halaman Kontak
+│   └── page.tsx                  # Halaman Utama (Homepage)
+│
+├── (admin)/                      # Grup route untuk panel admin (terproteksi)
+│   ├── dashboard/                # Halaman Dashboard
+│   ├── members/                  # Halaman CRUD Member
+│   ├── partners/                 # Halaman CRUD Partner
+│   ├── projects/                 # Halaman CRUD Proyek
+│   ├── publications/             # Halaman CRUD Publikasi
+│   ├── settings/                 # Halaman pengaturan konten statis
+│   └── layout.tsx                # Layout Admin (dengan Sidebar)
+│
+├── api/                          # Backend API Routes
+│   ├── activity-logs/
+│   ├── auth/ (login, logout)
+│   ├── members/ (GET, POST, PUT, DELETE)
+│   ├── page-content/ (GET, PUT)
+│   ├── partners/ (GET, POST, PUT, DELETE)
+│   ├── projects/ (GET, POST, PUT, DELETE)
+│   ├── publications/ (GET, POST, PUT, DELETE)
+│   ├── send-email/ (POST)
+│   ├── stats/ (GET)
+│   └── upload/ (POST)
+│
+├── login/                        # Halaman Login Admin (di luar layout admin)
+│   └── page.tsx
+│
+├── layout.tsx                    # Root layout (dengan ThemeProvider)
+└── globals.css                   # Styling global Tailwind
 
 components/
-├── ui/             # shadcn/ui components
-├── navbar.tsx      # Navigation bar
-├── footer.tsx      # Footer component
-└── ...
+├── ui/                           # Komponen shadcn/ui
+├── footer.tsx
+├── navbar.tsx
+└── theme-toggle.tsx
 
 lib/
-├── api/            # API client functions
-├── supabase/       # Supabase client
-└── utils.ts        # Utility functions
-```
-
-## Key Changes from Formspree to Resend
-
-- ✅ Removed `@formspree/react` dependency
-- ✅ Created `/api/send-email` route using Resend SDK
-- ✅ Email recipient from database (not hardcoded)
-- ✅ Custom form handling with better error states
-- ✅ No external form service dependency
-
-## Content Management
-
-All content (teks, gambar, contact info) dikelola melalui admin panel di `/admin/settings`. Tidak ada hardcoded content di frontend.
-
-## License
-
-Proprietary - IoT Lab
-
-## Support
-
-Untuk pertanyaan atau support, hubungi email yang tertera di website.
+├── supabase/                     # Klien Supabase (client, server, upload)
+├── types/                        # Tipe data TypeScript
+└── utils.ts                      # Fungsi utilitas (cn)

@@ -48,7 +48,8 @@ NEXT_PUBLIC_SUPABASE_URL=https://<id-proyek-kamu>.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<kunci_anon_publik_kamu>
 
 # Kredensial dari Resend Dashboard -> API Keys
-RESEND_API_KEY=re_kunci_api_resend_kamu```
+RESEND_API_KEY=re_kunci_api_resend_kamu
+```
 
 (Catatan: File .env.local yang kamu unggah juga berisi NEXT_PUBLIC_FORM untuk Formspree. Jika kamu final menggunakan Resend, kamu tidak memerlukannya. Jika kamu tetap pakai Formspree, kamu tidak perlu RESEND_API_KEY.)
 

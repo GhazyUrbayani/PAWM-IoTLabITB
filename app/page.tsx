@@ -5,7 +5,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import { Container } from "@/components/container"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Loader2 } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
 import Link from "next/link"
@@ -20,6 +20,7 @@ import { Avatar } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { projectsApi, membersApi, publicationsApi, partnersApi, pageContentApi } from "@/lib/api/client"
 import type { Project, Member, Publication, Partner } from "@/lib/types/database"
+import { LoadingSpinner } from "@/components/splash-screen"
 
 export default function Home() {
   const [filter, setFilter] = useState("all")
@@ -202,8 +203,9 @@ export default function Home() {
             </p>
           </div>
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="flex flex-col justify-center items-center py-16 space-y-4">
+              <LoadingSpinner size="lg" />
+              <p className="text-sm text-muted-foreground animate-pulse">Memuat data anggota tim...</p>
             </div>
           ) : members.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
@@ -264,8 +266,9 @@ export default function Home() {
 
           {/* Project Grid */}
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="flex flex-col justify-center items-center py-16 space-y-4">
+              <LoadingSpinner size="lg" />
+              <p className="text-sm text-muted-foreground animate-pulse">Memuat proyek riset...</p>
             </div>
           ) : filteredProjects.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
@@ -321,8 +324,9 @@ export default function Home() {
             </p>
           </div>
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="flex flex-col justify-center items-center py-16 space-y-4">
+              <LoadingSpinner size="lg" />
+              <p className="text-sm text-muted-foreground animate-pulse">Memuat publikasi ilmiah...</p>
             </div>
           ) : publications.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">
@@ -361,8 +365,9 @@ export default function Home() {
             </p>
           </div>
           {loading ? (
-            <div className="flex justify-center items-center py-12">
-              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <div className="flex flex-col justify-center items-center py-16 space-y-4">
+              <LoadingSpinner size="lg" />
+              <p className="text-sm text-muted-foreground animate-pulse">Memuat data mitra...</p>
             </div>
           ) : partners.length === 0 ? (
             <div className="text-center py-12 text-muted-foreground">

@@ -8,9 +8,10 @@ import { Container } from "@/components/container"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { MapPin, Mail, Phone, CheckCircle, Loader2, AlertCircle } from "lucide-react"
+import { MapPin, Mail, Phone, CheckCircle, AlertCircle } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { pageContentApi } from "@/lib/api/client"
+import { LoadingSpinner } from "@/components/splash-screen"
 
 export default function ContactPage() {
   const [loading, setLoading] = useState(true)
@@ -212,10 +213,10 @@ export default function ContactPage() {
                     disabled={submitting}
                   >
                     {submitting ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Mengirim...
-                      </>
+                      <div className="flex items-center justify-center gap-2">
+                        <LoadingSpinner size="sm" className="text-white" />
+                        <span>Mengirim...</span>
+                      </div>
                     ) : (
                       "Kirim Pesan"
                     )}
@@ -228,8 +229,9 @@ export default function ContactPage() {
             <div className="space-y-8">
               <h2 className="mb-8">Informasi Kontak</h2>
               {loading ? (
-                <div className="flex justify-center items-center py-12">
-                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                <div className="flex flex-col justify-center items-center py-16 space-y-4">
+                  <LoadingSpinner size="lg" />
+                  <p className="text-sm text-muted-foreground animate-pulse">Memuat informasi kontak...</p>
                 </div>
               ) : (
                 <div className="space-y-6">

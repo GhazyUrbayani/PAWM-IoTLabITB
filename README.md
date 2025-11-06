@@ -67,6 +67,30 @@ pnpm install
 pnpm dev
 # 3. Buka http://localhost:3000 di browser kamu.
 
+## 🗂️ Struktur Proyek (Final)# Kredensial dari Supabase Dashboard -> Settings -> API
+NEXT_PUBLIC_SUPABASE_URL=https://<id-proyek-kamu>.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<kunci_anon_publik_kamu>
+
+# Kredensial dari Resend Dashboard -> API Keys
+RESEND_API_KEY=re_kunci_api_resend_kamu
+
+## 2. Setup Database Supabase
+Seluruh skema database, RLS (Row Level Security), dan data awal ada di satu file.
+* 1. Buka dashboard proyek Supabase kamu.
+* 2. Pergi ke SQL Editor.
+* 3. Salin seluruh isi dari file database-schema.sql.
+* 4. Tempel ke SQL Editor dan klik "RUN".
+Ini akan membuat tabel projects, members, publications, partners, page_content, activity_logs dan mengaktifkan RLS.
+
+## 3. Instalasi & Menjalankan Proyek
+Proyek ini menggunakan pnpm.
+# 1. Install dependencies
+pnpm install
+
+# 2. Jalankan development server
+pnpm dev
+# 3. Buka http://localhost:3000 di browser kamu.
+
 ## 🗂️ Struktur Proyek (Final)
 
 app/

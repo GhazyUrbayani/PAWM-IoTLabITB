@@ -55,10 +55,10 @@ RESEND_API_KEY=re_kunci_api_resend_kamu
 
 ### 2. Setup Database Supabase
 Seluruh skema database, RLS (Row Level Security), dan data awal ada di satu file.
-* 1. Buka dashboard proyek Supabase kamu.
-* 2. Pergi ke SQL Editor.
-* 3. Salin seluruh isi dari file database-schema.sql.
-* 4. Tempel ke SQL Editor dan klik "RUN".
+1. Buka dashboard proyek Supabase kamu.
+2. Pergi ke SQL Editor.
+3. Salin seluruh isi dari file database-schema.sql.
+4. Tempel ke SQL Editor dan klik "RUN".
 Ini akan membuat tabel projects, members, publications, partners, page_content, activity_logs dan mengaktifkan RLS.
 
 ### 3. Instalasi & Menjalankan Proyek

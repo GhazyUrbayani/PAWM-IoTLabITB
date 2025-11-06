@@ -110,5 +110,5 @@ pnpm dev
 
 - lib/
 - ├── supabase/                     # Klien Supabase (client, server, upload)
-├── types/                        # Tipe data TypeScript
-└── utils.ts                      # Fungsi utilitas (cn)
+- ├── types/                        # Tipe data TypeScript
+- └── utils.ts                      # Fungsi utilitas (cn)

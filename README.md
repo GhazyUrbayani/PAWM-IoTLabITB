@@ -1,76 +1,152 @@
-# Website Profil Laboratorium IoT (Tugas Besar PAWM)
+# IoT Lab Website
 
-[![Status Proyek](https://img.shields.io/badge/Status-Development-blue.svg)](https://github.com/USERNAME-KAMU/pawm-tubes-iot-lab)
-[![Tech Stack](https://img.shields.io/badge/Stack-Next.js-black?logo=nextdotjs)](https://nextjs.org/)
-[![Deploy](https://img.shields.io/badge/Deploy-Vercel-black?logo=vercel)](https://vercel.com/)
+Website resmi laboratorium IoT yang dibangun dengan Next.js 16, Supabase, dan Resend.
 
-Website profil resmi untuk Laboratorium Riset IoT. Proyek ini dikembangkan sebagai pemenuhan Tugas Besar (TuBes) mata kuliah Pengembangan Aplikasi Web dan Mobile (PAWM).
+## Tech Stack
 
-Website ini dirancang sebagai etalase digital utama untuk memamerkan riset, fasilitas, anggota tim, dan publikasi lab kepada mitra industri, akademisi, dan calon mahasiswa.
+- **Framework**: Next.js 16.0.0 (App Router)
+- **Database**: Supabase (PostgreSQL)
+- **Email Service**: Resend
+- **UI Components**: Radix UI, shadcn/ui
+- **Styling**: Tailwind CSS
+- **Language**: TypeScript
+- **Package Manager**: pnpm
 
-## Konteks Proyek Spek
+## Features
 
-Proyek ini ("Website Lab IoT") juga difungsikan sebagai objek studi kasus untuk Laporan Ujian Tengah Semester (UTS) II3130, di mana proyek ini dianalisis sebagai sebuah "Virtual Lab" sesuai arahan tugas.
+- ✅ Dynamic content management (Hero, About, History)
+- ✅ Image upload untuk semua section (Hero, About, History)
+- ✅ Admin dashboard dengan authentication
+- ✅ Project/Research management
+- ✅ Team members management
+- ✅ Publications management
+- ✅ Partners/Funding management
+- ✅ Contact form dengan Resend email service
+- ✅ Dark/Light theme toggle
+- ✅ Responsive design
+- ✅ Smart cookie management (persist on refresh, clear on close)
 
-## Fitur Utama
+## Environment Variables
 
-* **Profil Lab:** Halaman `Tentang Kami` yang mendetail (Visi, Misi, Sejarah).
-* **Galeri Riset:** Database proyek riset yang dapat difilter (S1, S2, S3, Ongoing).
-* **Tim Peneliti:** Pameran profil Dosen, Peneliti Utama, dan Mahasiswa.
-* **Peta Jalan Riset:** Visualisasi *timeline* fokus riset lab.
-* **Desain Dual-Mode:** *Toggle* Light Mode (profesional) dan Dark Mode (high-tech) yang elegan.
-* **Panel Admin:** (WIP) Halaman admin untuk mengelola konten proyek dan anggota (CRUD).
+Copy `.env.local.example` ke `.env.local` dan isi dengan nilai yang sesuai:
 
-## Tumpukan Teknologi (Tech Stack)
+```bash
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url_here
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 
-* **Frontend:** [Next.js](https://nextjs.org/) (React Framework)
-* **Styling:** [Tailwind CSS](https://tailwindcss.com/)
-* **UI Generation:** [v0.dev](https://v0.dev/)
-* **Backend:** Next.js API Routes / [Supabase](https://supabase.io/) (untuk Database & Auth)
-* **Deployment:** [Vercel](https://vercel.com/)
+# Resend Email Service
+# Get your API key from: https://resend.com/api-keys
+RESEND_API_KEY=re_your_resend_api_key_here
+```
 
-## Instalasi & Menjalankan Proyek (Lokal)
+### Cara Mendapatkan API Keys
 
-Pastikan kamu memiliki [Node.js](https://nodejs.org/) (v18 atau lebih baru) dan `npm` terinstal.
+#### Supabase
 
-1.  **Clone repository ini:**
-    ```bash
-    git clone https://github.com/GhazyUrbayani/PAWM-IoTLabITB.git
-    cd PAWM-IoTLabITB
-    ```
+1. Buat project baru di [Supabase](https://supabase.com/)
+2. Pergi ke Settings → API
+3. Copy **URL** dan **anon/public key**
 
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+#### Resend
 
-3.  **Setup Environment Variables:**
-    * Buat file `.env.local` di root proyek.
-    * (WIP: Tambahkan variabel yang dibutuhkan, misal: `SUPABASE_URL` dan `SUPABASE_KEY`)
+1. Daftar di [Resend](https://resend.com/)
+2. Pergi ke [API Keys](https://resend.com/api-keys)
+3. Buat API key baru
+4. **Penting**: Untuk production, verifikasi domain Anda terlebih dahulu
 
-4.  **Jalankan development server:**
-    ```bash
-    npm run dev
-    ```
+## Database Setup
 
-Buka [http://localhost:3000](http://localhost:3000) di browser kamu.
+1. Jalankan script SQL di file `SETUP_PAGE_CONTENT_TABLE.sql` di Supabase SQL Editor
+2. Script ini akan membuat table `page_content` dengan semua field yang diperlukan
 
-## Struktur Direktori (Utama)
+## Installation
 
-- ├── .next/ (Build output)
-- ├── app/ (Next.js App Router - Struktur Halaman Utama)
-- │ ├── (public)/ (Halaman publik)
-- │ │ ├── about/
-- │ │ ├── projects/
-- │ │ └── page.tsx
-- │ ├── (admin)/ (Halaman admin - protected)
-- │ │ ├── dashboard/
-- │ │ └── page.tsx
-- │ └── layout.tsx
-- ├── components/ (Komponen UI Reusable - cth: Navbar, Footer, Card)
-- ├── public/ (Aset statis - images, fonts)
-- ├── .gitignore (File yang diabaikan Git)
-- └── README.md (Dokumentasi ini)
+```bash
+# Install dependencies
+pnpm install
 
----
-*Dikerjakan untuk mata kuliah II3140 Pengembangan Aplikasi Web dan Mobile.*
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Start production server
+pnpm start
+```
+
+## Admin Access
+
+1. Navigasi ke `/admin/login`
+2. Login dengan email dan password yang terdaftar di Supabase `users` table
+3. Akses admin dashboard untuk manage content
+
+## Upload Folders
+
+Upload folders yang digunakan di Supabase Storage:
+
+- `settings/` - Hero, About, History images
+- `projects/` - Project images
+- `members/` - Team member photos
+- `partners/` - Partner logos
+
+## Contact Form
+
+Contact form menggunakan Resend email service. Email akan dikirim ke alamat yang diset di page_content table (key: `contact_email`).
+
+**Catatan Penting untuk Production:**
+
+- Update `from` address di `app/api/send-email/route.ts` dengan domain yang sudah diverifikasi di Resend
+- Default: `onboarding@resend.dev` (hanya untuk testing)
+
+## Cookie Management
+
+Website menggunakan smart cookie cleanup:
+
+- **Persist**: Cookie tetap ada saat refresh/reload page
+- **Clear**: Cookie dihapus otomatis saat tab/browser ditutup (bukan saat refresh)
+- **Timeout**: Cookie dihapus setelah 30 menit tidak aktif
+
+## Project Structure
+
+```
+app/
+├── admin/          # Admin panel (protected routes)
+├── api/            # API routes (auth, upload, send-email)
+├── contact/        # Contact page
+├── research/       # Research detail pages
+├── page.tsx        # Homepage
+└── ...
+
+components/
+├── ui/             # shadcn/ui components
+├── navbar.tsx      # Navigation bar
+├── footer.tsx      # Footer component
+└── ...
+
+lib/
+├── api/            # API client functions
+├── supabase/       # Supabase client
+└── utils.ts        # Utility functions
+```
+
+## Key Changes from Formspree to Resend
+
+- ✅ Removed `@formspree/react` dependency
+- ✅ Created `/api/send-email` route using Resend SDK
+- ✅ Email recipient from database (not hardcoded)
+- ✅ Custom form handling with better error states
+- ✅ No external form service dependency
+
+## Content Management
+
+All content (teks, gambar, contact info) dikelola melalui admin panel di `/admin/settings`. Tidak ada hardcoded content di frontend.
+
+## License
+
+Proprietary - IoT Lab
+
+## Support
+
+Untuk pertanyaan atau support, hubungi email yang tertera di website.

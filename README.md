@@ -69,46 +69,46 @@ pnpm dev
 
 ## 🗂️ Struktur Proyek (Final)
 
-- app/
-- ├── (public)/                     # Grup route untuk halaman publik
-- │   ├── contact/
-- │   │   └── page.tsx              # Halaman Kontak
-- │   └── page.tsx                  # Halaman Utama (Homepage)
-- │
-- ├── (admin)/                      # Grup route untuk panel admin (terproteksi)
-- │   ├── dashboard/                # Halaman Dashboard
-- │   ├── members/                  # Halaman CRUD Member
-- │   ├── partners/                 # Halaman CRUD Partner
-- │   ├── projects/                 # Halaman CRUD Proyek
-- │   ├── publications/             # Halaman CRUD Publikasi
-- │   ├── settings/                 # Halaman pengaturan konten statis
-- │   └── layout.tsx                # Layout Admin (dengan Sidebar)
-- │
-- ├── api/                          # Backend API Routes
-- │   ├── activity-logs/
-- │   ├── auth/ (login, logout)
-- │   ├── members/ (GET, POST, PUT, DELETE)
-- │   ├── page-content/ (GET, PUT)
-- │   ├── partners/ (GET, POST, PUT, DELETE)
-- │   ├── projects/ (GET, POST, PUT, DELETE)
-- │   ├── publications/ (GET, POST, PUT, DELETE)
-- │   ├── send-email/ (POST)
-- │   ├── stats/ (GET)
-- │   └── upload/ (POST)
-- │
-- ├── login/                        # Halaman Login Admin (di luar layout admin)
-- │   └── page.tsx
-- │
-- ├── layout.tsx                    # Root layout (dengan ThemeProvider)
-- └── globals.css                   # Styling global Tailwind
+* app/
+* ├── (public)/                     # Grup route untuk halaman publik
+* │   ├── contact/
+* │   │   └── page.tsx              # Halaman Kontak
+* │   └── page.tsx                  # Halaman Utama (Homepage)
+* │
+* ├── (admin)/                      # Grup route untuk panel admin (terproteksi)
+* │   ├── dashboard/                # Halaman Dashboard
+* │   ├── members/                  # Halaman CRUD Member
+* │   ├── partners/                 # Halaman CRUD Partner
+* │   ├── projects/                 # Halaman CRUD Proyek
+* │   ├── publications/             # Halaman CRUD Publikasi
+* │   ├── settings/                 # Halaman pengaturan konten statis
+* │   └── layout.tsx                # Layout Admin (dengan Sidebar)
+* │
+* ├── api/                          # Backend API Routes
+* │   ├── activity-logs/
+* │   ├── auth/ (login, logout)
+* │   ├── members/ (GET, POST, PUT, DELETE)
+* │   ├── page-content/ (GET, PUT)
+* │   ├── partners/ (GET, POST, PUT, DELETE)
+* │   ├── projects/ (GET, POST, PUT, DELETE)
+* │   ├── publications/ (GET, POST, PUT, DELETE)
+* │   ├── send-email/ (POST)
+* │   ├── stats/ (GET)
+* │   └── upload/ (POST)
+* │
+* ├── login/                        # Halaman Login Admin (di luar layout admin)
+* │   └── page.tsx
+* │
+* ├── layout.tsx                    # Root layout (dengan ThemeProvider)
+* └── globals.css                   # Styling global Tailwind
 
-- components/
-- ├── ui/                           # Komponen shadcn/ui
-- ├── footer.tsx
-- ├── navbar.tsx
-- └── theme-toggle.tsx
+* components/
+* ├── ui/                           # Komponen shadcn/ui
+* ├── footer.tsx
+* ├── navbar.tsx
+* └── theme-toggle.tsx
 
-- lib/
-- ├── supabase/                     # Klien Supabase (client, server, upload)
-- ├── types/                        # Tipe data TypeScript
-- └── utils.ts                      # Fungsi utilitas (cn)
+* lib/
+* ├── supabase/                     # Klien Supabase (client, server, upload)
+* ├── types/                        # Tipe data TypeScript
+* └── utils.ts                      # Fungsi utilitas (cn)

@@ -50,89 +50,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=<kunci_anon_publik_kamu>
 # Kredensial dari Resend Dashboard -> API Keys
 RESEND_API_KEY=re_kunci_api_resend_kamu
 
-## 2. Setup Database Supabase
+(Catatan: File .env.local yang kamu unggah juga berisi NEXT_PUBLIC_FORM untuk Formspree. Jika kamu final menggunakan Resend, kamu tidak memerlukannya. Jika kamu tetap pakai Formspree, kamu tidak perlu RESEND_API_KEY.)
+
+### 2. Setup Database Supabase
 Seluruh skema database, RLS (Row Level Security), dan data awal ada di satu file.
 * 1. Buka dashboard proyek Supabase kamu.
 * 2. Pergi ke SQL Editor.
 * 3. Salin seluruh isi dari file database-schema.sql.
 * 4. Tempel ke SQL Editor dan klik "RUN".
 Ini akan membuat tabel projects, members, publications, partners, page_content, activity_logs dan mengaktifkan RLS.
-
-## 3. Instalasi & Menjalankan Proyek
-Proyek ini menggunakan pnpm.
-# 1. Install dependencies
-pnpm install
-
-# 2. Jalankan development server
-pnpm dev
-# 3. Buka http://localhost:3000 di browser kamu.
-
-## 🗂️ Struktur Proyek (Final)# Kredensial dari Supabase Dashboard -> Settings -> API
-NEXT_PUBLIC_SUPABASE_URL=https://<id-proyek-kamu>.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<kunci_anon_publik_kamu>
-
-# Kredensial dari Resend Dashboard -> API Keys
-RESEND_API_KEY=re_kunci_api_resend_kamu
-
-## 2. Setup Database Supabase
-Seluruh skema database, RLS (Row Level Security), dan data awal ada di satu file.
-* 1. Buka dashboard proyek Supabase kamu.
-* 2. Pergi ke SQL Editor.
-* 3. Salin seluruh isi dari file database-schema.sql.
-* 4. Tempel ke SQL Editor dan klik "RUN".
-Ini akan membuat tabel projects, members, publications, partners, page_content, activity_logs dan mengaktifkan RLS.
-
-## 3. Instalasi & Menjalankan Proyek
-Proyek ini menggunakan pnpm.
-# 1. Install dependencies
-pnpm install
-
-# 2. Jalankan development server
-pnpm dev
-# 3. Buka http://localhost:3000 di browser kamu.
-
-## 🗂️ Struktur Proyek (Final)
-
-app/
-├── (public)/                     # Grup route untuk halaman publik
-│   ├── contact/
-│   │   └── page.tsx              # Halaman Kontak
-│   └── page.tsx                  # Halaman Utama (Homepage)
-│
-├── (admin)/                      # Grup route untuk panel admin (terproteksi)
-│   ├── dashboard/                # Halaman Dashboard
-│   ├── members/                  # Halaman CRUD Member
-│   ├── partners/                 # Halaman CRUD Partner
-│   ├── projects/                 # Halaman CRUD Proyek
-│   ├── publications/             # Halaman CRUD Publikasi
-│   ├── settings/                 # Halaman pengaturan konten statis
-│   └── layout.tsx                # Layout Admin (dengan Sidebar)
-│
-├── api/                          # Backend API Routes
-│   ├── activity-logs/
-│   ├── auth/ (login, logout)
-│   ├── members/ (GET, POST, PUT, DELETE)
-│   ├── page-content/ (GET, PUT)
-│   ├── partners/ (GET, POST, PUT, DELETE)
-│   ├── projects/ (GET, POST, PUT, DELETE)
-│   ├── publications/ (GET, POST, PUT, DELETE)
-│   ├── send-email/ (POST)
-│   ├── stats/ (GET)
-│   └── upload/ (POST)
-│
-├── login/                        # Halaman Login Admin (di luar layout admin)
-│   └── page.tsx
-│
-├── layout.tsx                    # Root layout (dengan ThemeProvider)
-└── globals.css                   # Styling global Tailwind
-
-components/
-├── ui/                           # Komponen shadcn/ui
-├── footer.tsx
-├── navbar.tsx
-└── theme-toggle.tsx
-
-lib/
-├── supabase/                     # Klien Supabase (client, server, upload)
-├── types/                        # Tipe data TypeScript
-└── utils.ts                      # Fungsi utilitas (cn)

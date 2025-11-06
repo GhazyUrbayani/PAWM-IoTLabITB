@@ -70,7 +70,7 @@ pnpm install
 # 2. Jalankan development server
 pnpm dev
 
-# 3. Buka http://localhost:3000 di browser kamu.
+3. Buka http://localhost:3000 di browser kamu.
 
 ## 🗂️ Struktur Proyek (Final)
 

@@ -7,7 +7,10 @@
 
 Website profil resmi untuk Laboratorium Riset IoT, dikembangkan sebagai Tugas Besar mata kuliah Pengembangan Aplikasi Web dan Mobile (PAWM).
 
-Ini bukan hanya *website* statis, tetapi sebuah *Content Management System* (CMS) penuh yang memungkinkan admin lab mengelola seluruh konten halaman depan secara dinamis melalui *dashboard* admin yang terproteksi.
+#### Link Website Hasil Deploy
+pawm-iot-lab-itb.vercel.app
+
+Ini bukan hanya *website* statis tetapi sebuah *Content Management System* (CMS) penuh yang memungkinkan admin lab mengelola seluruh konten halaman depan secara dinamis melalui *dashboard* admin yang terproteksi.
 
 ## ✨ Fitur Utama (Sesuai Kode Final)
 
